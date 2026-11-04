@@ -1,0 +1,291 @@
+
+{
+  "projects": [
+    {
+      "id": "au0101-deposit",
+      "name": "AU0101 - Core Banking Deposit Module",
+      "company": "AU Small Finance Bank",
+      "role": "Software Developer",
+      "duration": "Sep 2025 - Oct 2026",
+      "category": "Banking & Financial Technology",
+      "projectType": "Own end to end development of Deposit Module",
+      "description": "Worked on the Deposit Module of AU0101, a core banking platform, contributing to backend services and transaction-oriented application workflows.",
+      "responsibilities": [
+        "Developed and enhanced backend functionality for the Deposit Module.",
+        "Worked on transaction-oriented application workflows.",
+        "Implemented and maintained REST APIs using Spring Boot.",
+        "Worked with Hibernate/JPA and relational databases.",
+        "Contributed to application integration using Kafka and Redis."
+      ],
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "Spring Security",
+        "Hibernate",
+        "JPA",
+        "Kafka",
+        "Redis",
+        "MySQL",
+        "PostgreSQL",
+        "React Native"
+      ]
+    },
+    {
+      "id": "qp-packing",
+      "name": "QP Packing",
+      "company": "Data Ingenious Global Limited",
+      "role": "Java Developer",
+      "duration": "Jul 2023 - Jul 2025",
+      "category": "Enterprise Application",
+      "projectType": "Major Development & Implementation",
+      "description": "An enterprise application focused on packing workflows and large-scale Excel/PDF document generation with batch processing.",
+      "responsibilities": [
+        "Developed backend modules using Spring Boot.",
+        "Implemented batch processing using Spring Batch.",
+        "Worked on generating more than 10,000 Excel/PDF files in a request workflow.",
+        "Used Apache POI streaming techniques for large file processing.",
+        "Implemented multithreading for processing-intensive operations.",
+        "Worked with Spring Security, AOP and Redis.",
+        "Worked with AWS and Kubernetes deployment environments."
+      ],
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "Spring Batch",
+        "Spring Security",
+        "Spring AOP",
+        "Multithreading",
+        "Apache POI",
+        "Redis",
+        "AWS",
+        "Kubernetes"
+      ]
+    },
+    {
+      "id": "xgen-mail",
+      "name": "XGEN MAIL",
+      "company": "Data Ingenious Global Limited",
+      "role": "Java Developer",
+      "duration": "Jul 2023 - Jul 2025",
+      "category": "Email & Communication Platform",
+      "projectType": "Existing Product Enhancement",
+      "description": "An email communication platform where I contributed to Java-based web application development and backend functionality.",
+      "responsibilities": [
+        "Developed and maintained application features using JSP and Servlets.",
+        "Implemented backend functionality using Java.",
+        "Worked with JDBC Template for database operations.",
+        "Worked on MySQL database integration."
+      ],
+      "technologies": [
+        "Java",
+        "JSP",
+        "Servlets",
+        "JDBC Template",
+        "MySQL",
+        "JavaScript"
+      ]
+    },
+    {
+      "id": "godil",
+      "name": "GODIL - Email Domain Module",
+      "company": "Data Ingenious Global Limited",
+      "role": "Java Developer",
+      "duration": "Jul 2023 - Jul 2025",
+      "category": "Email & Domain Management",
+      "projectType": "Existing Product Enhancement",
+      "description": "An email-domain management module developed using Java web technologies and Hibernate.",
+      "responsibilities": [
+        "Developed and maintained web application features.",
+        "Worked with JSP and Servlets.",
+        "Implemented persistence functionality using Hibernate.",
+        "Worked on database interaction and application maintenance."
+      ],
+      "technologies": [
+        "Java",
+        "JSP",
+        "Servlets",
+        "Hibernate",
+        "MySQL"
+      ]
+    },
+    {
+      "id": "sportasy-snopii",
+      "name": "Sportasy / Snopii Admin Platform",
+      "company": "Synarion IT Solution Pvt. Ltd.",
+      "role": "Full Stack Developer",
+      "duration": "Jul 2022 - Jun 2023",
+      "category": "Admin & Management Platform",
+      "projectType": "Backend Development & Integration",
+      "description": "An admin management platform with backend APIs, authentication, authorization and payment gateway integrations.",
+      "responsibilities": [
+        "Developed REST APIs using Spring Boot.",
+        "Implemented JWT-based authentication.",
+        "Implemented role-based access control and permission management.",
+        "Integrated PayPal, Stripe and Paytm payment gateways.",
+        "Worked on AES encryption for application data security.",
+        "Developed and maintained backend business logic."
+      ],
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "Spring Security",
+        "JWT",
+        "RBAC",
+        "AES Encryption",
+        "PayPal",
+        "Stripe",
+        "Paytm",
+        "MySQL"
+      ]
+    },
+    {
+      "id": "go4wallet",
+      "name": "Go4wallet - Recharge Platform",
+      "company": "Synarion IT Solution Pvt. Ltd.",
+      "role": "Full Stack Developer",
+      "duration": "Jul 2022 - Jun 2023",
+      "category": "Wallet & Recharge Platform",
+      "projectType": "Backend Development & Platform Integration & Deployment",
+      "description": "A recharge platform involving backend API development, encryption and integration of application functionality with web-based services.",
+      "responsibilities": [
+        "Developed REST APIs using Spring Boot.",
+        "Worked on recharge-related backend workflows.",
+        "Implemented encryption-related functionality.",
+        "Used multithreading for backend processing.",
+        "Contributed to adapting Android application functionality for web-based access."
+      ],
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "REST APIs",
+        "MySQL",
+        "Encryption",
+        "Multithreading",
+        "Android"
+      ]
+    },
+    {
+      "id": "online-hrms",
+      "name": "Online HRMS",
+      "company": "Zenith Private Limited - TCS Project",
+      "role": "Java Developer",
+      "duration": "May 2021 - Jun 2022",
+      "category": "Human Resource Management",
+      "projectType": "Existing Application Development",
+      "description": "An online Human Resource Management System developed using Java and Spring technologies.",
+      "responsibilities": [
+        "Developed and maintained HRMS application modules.",
+        "Implemented backend functionality using Spring MVC and Spring Boot.",
+        "Worked with Hibernate and JPA for database persistence.",
+        "Worked on application business logic and database integration."
+      ],
+      "technologies": [
+        "Java",
+        "Spring MVC",
+        "Spring Boot",
+        "Hibernate",
+        "JPA",
+        "MySQL"
+      ]
+    },
+    {
+      "id": "investment-monitoring",
+      "name": "SLR & Non-SLR Investment Monitoring",
+      "company": "Zenith Private Limited - TCS Project",
+      "role": "Java Developer",
+      "duration": "May 2021 - Jun 2022",
+      "category": "Financial Reporting",
+      "projectType": "Fully owned development of investment monitoring and reporting application",
+      "description": "An investment monitoring and reporting application covering SLR and Non-SLR investment-related information.",
+      "responsibilities": [
+        "Worked on investment monitoring application functionality.",
+        "Contributed to SLR and Non-SLR reporting features.",
+        "Worked on Java-based application logic and database operations."
+      ],
+      "technologies": [
+        "Java",
+        "Spring",
+        "Hibernate",
+        "JPA",
+        "SQL"
+      ]
+    }
+  ],
+
+  "impact": [
+    {
+      "id": "impact-01",
+      "title": "Core Banking Development",
+      "workedAs": "Software Developer",
+      "category": "Banking Domain",
+      "company": "AU Small Finance Bank | Jaipur",
+      "timeframe": "Sep 2025 – Oct 2026",
+      "description": "Worked on the AU0101 Core Banking System, contributing to the Deposit Module using Java, Spring Boot and Hibernate. Involved in backend API development, high-volume transaction processing, database operations and integrations with Kafka and Redis.",
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "Hibernate / JPA",
+        "Kafka",
+        "Redis",
+        "MySQL",
+        "PostgreSQL"
+      ]
+    },
+    {
+      "id": "impact-02",
+      "title": "Mail Services & High-Volume Document Processing",
+      "workedAs": "Java Developer",
+      "category": "Enterprise Application",
+      "company": "Data Ingenious Global Limited | Jaipur",
+      "timeframe": "Jul 2023 – Jul 2025",
+      "description": "Worked on QP Packing, an enterprise application involving large-scale Excel and PDF generation. Implemented batch processing and performance-oriented backend workflows capable of handling 10,000+ files in a request using Apache POI streaming and multithreading.",
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "Spring Batch",
+        "Apache POI",
+        "Multithreading",
+        "Redis",
+        "AWS",
+        "Kubernetes"
+      ]
+    },
+    {
+      "id": "impact-03",
+      "title": "Secure Backend API Development",
+      "workedAs": "Full Stack Developer",
+      "category": "Security & Authorization",
+      "company": "Synarion IT Solution Pvt. Ltd. | Jaipur",
+      "timeframe": "Jul 2022 – Jun 2023",
+      "description": "Developed backend APIs using Spring Boot and implemented JWT-based authentication, role-based access control, permission management and AES encryption to support secure application workflows.",
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "Spring Security",
+        "JWT",
+        "RBAC",
+        "AES Encryption"
+      ]
+    },
+    {
+      "id": "impact-05",
+      "title": "Enterprise Application Development",
+      "workedAs": "Full Stack Developer",
+      "category": "HRMS & Financial Reporting",
+      "company": "Zenith Private Limited | TCS Project",
+      "timeframe": "May 2021 – Jun 2022",
+      "description": "Contributed to Online HRMS and SLR / Non-SLR investment monitoring applications, developing Java-based application functionality, backend business logic and database operations.",
+      "technologies": [
+        "Java",
+        "Spring MVC",
+        "Spring Boot",
+        "Hibernate",
+        "JPA",
+        "SQL"
+      ]
+    }
+  ]
+}
+
+
+

@@ -87,31 +87,31 @@ async function loadPortfolioData() {
                 impactGrid.appendChild(timelineLine);
             }
 
-                  const whatNext = document.createElement("article");
-        whatNext.className = "timeline-item";
-        whatNext.innerHTML = `
-            <div class="timeline-dot dot-outline"></div>
+            const whatNext = document.createElement("article");
+            whatNext.className = "timeline-item";
+            whatNext.innerHTML = `
+                <div class="timeline-dot dot-outline"></div>
 
-            <div class="timeline-date">
-                NEXT CHAPTER
-            </div>
+                <div class="timeline-date">
+                    NEXT CHAPTER
+                </div>
 
-            <div class="timeline-content next-role">
+                <div class="timeline-content next-role">
 
-                <h3>What's next?</h3>
+                    <h3>What's next?</h3>
 
-                <p>
-                    I'm open to opportunities where I can contribute
-                    my backend development experience, solve
-                    meaningful engineering problems and continue
-                    growing as a software engineer.
-                </p>
+                    <p>
+                        I'm open to opportunities where I can contribute
+                        my backend development experience, solve
+                        meaningful engineering problems and continue
+                        growing as a software engineer.
+                    </p>
 
-                <a href="#contact" class="text-link">
-                    Let's connect <span>↗</span>
-                </a>
+                    <a href="#contact" class="text-link">
+                        Let's connect <span>↗</span>
+                    </a>
 
-            </div>`;
+                </div>`;
 
             impactGrid.appendChild(whatNext);
 
@@ -156,10 +156,26 @@ async function loadPortfolioData() {
                 impactGrid.appendChild(article);
         
             });
+
         }
+        // About section rendering
+        const aboutGrid = document.getElementById("aboutGrid");
+        if (aboutGrid) {
+            aboutGrid.innerHTML = data.about.map(item => `
+                    <div class="about-lead">
+                <p>
+                    ${escapeHTML(item.lead)}
+                </p>
+            </div>
 
+            <div class="about-detail">
+                ${item.detail.map(detail => `
+                    <p>${escapeHTML(detail)}</p>
+                `).join("")}
 
-
+            </div>
+            `).join("");
+        }
 
     } catch (error) {
         console.error("Portfolio loading error:", error);

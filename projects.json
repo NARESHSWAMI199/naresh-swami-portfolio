@@ -10,6 +10,7 @@
       "category": "Banking & Financial Technology",
       "projectType": "Own end to end development of Deposit Module",
       "description": "Worked on the Deposit Module of AU0101, a core banking platform, contributing to backend services and transaction-oriented application workflows.",
+      "showcase": "./assets/AU/au_bank_deposit_module_showcase.html",
       "responsibilities": [
         "Developed and enhanced backend functionality for the Deposit Module.",
         "Worked on transaction-oriented application workflows.",
@@ -39,6 +40,10 @@
       "category": "Enterprise Application",
       "projectType": "Major Development & Implementation",
       "description": "An enterprise application focused on packing workflows and large-scale Excel/PDF document generation with batch processing.",
+      "images" : [
+        "./assets/QP/1.png",
+        "./assets/QP/2.png"
+      ],
       "responsibilities": [
         "Developed backend modules using Spring Boot.",
         "Implemented batch processing using Spring Batch.",
@@ -70,6 +75,11 @@
       "category": "Email & Communication Platform",
       "projectType": "Existing Product Enhancement",
       "description": "An email communication platform where I contributed to Java-based web application development and backend functionality.",
+      "images": [
+        "./assets/xgen/ui.png",
+        "./assets/xgen/dashboard.png"
+      ],
+      "showcase" : "./assets/xgen/xgenplus_desktop_webmail_showcase.html",
       "responsibilities": [
         "Developed and maintained application features using JSP and Servlets.",
         "Implemented backend functionality using Java.",
@@ -296,6 +306,4 @@
     }
   ]
 }
-
-
 

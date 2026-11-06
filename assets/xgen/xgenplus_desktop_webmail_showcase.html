@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XgenPlus Enterprise Webmail - Data Ingenious Global Limited</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Noto Sans for Indian scripts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        xgen: {
+                            navy: '#0b132b',
+                            dark: '#1c2541',
+                            blue: '#1d4ed8',
+                            blueHover: '#1e40af',
+                            accent: '#3a86ff',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            rose: '#f43f5e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.03);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.5);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 116, 139, 0.8);
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-100 text-slate-800 font-sans antialiased overflow-hidden select-none dark:bg-slate-950 dark:text-slate-100">
+
+    <div class="flex flex-col h-screen w-screen overflow-hidden">
+        
+        <!-- ================= TOP DESKTOP HEADER BAR ================= -->
+        <header class="h-14 bg-slate-900 text-white flex items-center justify-between px-4 border-b border-slate-800 z-30 shrink-0">
+            <!-- Left Branding -->
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleSidebar()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-bars text-sm"></i>
+                </button>
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-black text-white text-base shadow-lg shadow-blue-900/40">
+                        X
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-black text-sm tracking-wide text-white">XgenPlus</span>
+                            <span class="text-[10px] bg-blue-900/80 text-blue-300 font-bold px-1.5 py-0.5 rounded border border-blue-700/50">ENTERPRISE WEBMAIL</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 leading-none">Data Ingenious Global Limited • Sovereign Private Cloud</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Search Bar -->
+            <div class="flex-1 max-w-2xl mx-8 relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
+                <input type="text" id="desktop-search" onkeyup="filterEmails()" placeholder="Search mail in English or vernacular languages (Hindi, Gujarati, Tamil, Arabic)..." class="w-full bg-slate-800/90 text-slate-100 placeholder-slate-400 text-xs rounded-xl pl-10 pr-24 py-2 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <div class="absolute right-2 top-1.5 flex items-center space-x-1">
+                    <button onclick="showToast('SIYA Voice Assistant Listening...')" class="p-1 px-2 text-[11px] text-blue-400 hover:bg-slate-700 rounded-md font-medium flex items-center gap-1">
+                        <i class="fa-solid fa-microphone text-xs"></i>
+                        <span>SIYA AI</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Controls & User Profile -->
+            <div class="flex items-center space-x-3">
+                
+                <!-- Security Vault Button -->
+                <button onclick="openSecurityModal()" class="flex items-center space-x-1.5 bg-emerald-950/80 border border-emerald-700/70 text-emerald-300 text-xs px-2.5 py-1.5 rounded-lg hover:bg-emerald-900/80 transition">
+                    <i class="fa-solid fa-shield-check text-emerald-400 text-xs"></i>
+                    <span class="font-bold text-[11px]">S/MIME PKI Active</span>
+                </button>
+
+                <!-- Indian Sovereign Badge -->
+                <div class="hidden xl:flex items-center space-x-1 bg-slate-800 border border-slate-700 px-2.5 py-1.5 rounded-lg text-slate-300 text-[11px] font-semibold">
+                    <span>🇮🇳 Data Sovereign India</span>
+                </div>
+
+                <div class="h-6 w-px bg-slate-800"></div>
+
+                <!-- Dark Mode Toggle -->
+                <button onclick="toggleDarkMode()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition" title="Toggle Theme">
+                    <i class="fa-solid fa-moon text-sm" id="dark-mode-icon"></i>
+                </button>
+
+                <!-- Account Switcher Profile Card -->
+                <div class="relative cursor-pointer" onclick="openAccountDropdown()">
+                    <div class="flex items-center space-x-2.5 bg-slate-800 hover:bg-slate-700/80 p-1.5 px-2.5 rounded-xl border border-slate-700 transition">
+                        <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-700 text-white flex items-center justify-center font-bold text-xs" id="header-avatar">
+                            AK
+                        </div>
+                        <div class="text-left hidden md:block">
+                            <p class="text-xs font-bold text-slate-200 leading-tight" id="header-user-name">अशोक कुमार (EAI)</p>
+                            <p class="text-[10px] text-blue-400 font-mono leading-none" id="header-user-email">अशोक@एक्सजेन.भारत</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-slate-400 text-[10px]"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ================= 3-COLUMN DESKTOP WORKSPACE ================= -->
+        <div class="flex-1 flex overflow-hidden">
+            
+            <!-- COLUMN 1: LEFT NAVIGATION SIDEBAR -->
+            <aside id="main-sidebar" class="w-64 bg-slate-900 text-slate-300 flex flex-col border-r border-slate-800 shrink-0 transition-all duration-300">
+                
+                <!-- Compose Main Button -->
+                <div class="p-3">
+                    <button onclick="openComposer()" class="w-full py-2.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold text-xs shadow-lg shadow-blue-900/30 flex items-center justify-center space-x-2 transition transform active:scale-95">
+                        <i class="fa-solid fa-pen-to-square text-sm"></i>
+                        <span class="tracking-wide">Compose EAI Mail</span>
+                    </button>
+                </div>
+
+                <!-- Folders List -->
+                <div class="flex-1 overflow-y-auto custom-scrollbar px-2 space-y-4">
+                    
+                    <!-- Primary Folders -->
+                    <div class="space-y-0.5">
+                        <button onclick="switchFolder('inbox')" id="folder-inbox" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-white bg-slate-800 border border-slate-700/60">
+                            <div class="flex items-center space-x-2.5">
+                                <i class="fa-solid fa-inbox text-blue-400 text-sm"></i>
+                                <span>Inbox</span>
+                            </div>
+                            <span class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded-full font-black">4</span>
+                        </button>
+                        <button onclick="switchFolder('starred')" id="folder-starred" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition">
+                            <div class="flex items-center space-x-2.5">
+                                <i class="fa-solid fa-star text-amber-400 text-sm"></i>
+                                <span>Starred Mails</span>
+                            </div>
+                        </button>
+                        <button onclick="switchFolder('sent')" id="folder-sent" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition">
+                            <div class="flex items-center space-x-2.5">
+                                <i class="fa-solid fa-paper-plane text-emerald-400 text-sm"></i>
+                                <span>Sent Items</span>
+                            </div>
+                        </button>
+                        <button onclick="switchFolder('drafts')" id="folder-drafts" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition">
+                            <div class="flex items-center space-x-2.5">
+                                <i class="fa-solid fa-file-lines text-slate-400 text-sm"></i>
+                                <span>Drafts</span>
+                            </div>
+                            <span class="text-slate-500 text-[10px]">2</span>
+                        </button>
+                        <button onclick="switchFolder('archive')" id="folder-archive" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition">
+                            <div class="flex items-center space-x-2.5">
+                                <i class="fa-solid fa-box-archive text-purple-400 text-sm"></i>
+                                <span>Archive</span>
+                            </div>
+                        </button>
+                        <button onclick="switchFolder('trash')" id="folder-trash" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition">
+                            <div class="flex items-center space-x-2.5">
+                                <i class="fa-solid fa-trash-can text-rose-400 text-sm"></i>
+                                <span>Trash</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Xgen Enterprise Services -->
+                    <div class="pt-2 border-t border-slate-800">
+                        <p class="px-3 text-[10px] font-black uppercase text-slate-500 tracking-wider mb-1">Data Ingenious Suite</p>
+                        <div class="space-y-0.5">
+                            <button onclick="showToast('Opening XGen IM Messenger Panel')" class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                                <div class="flex items-center space-x-2.5">
+                                    <i class="fa-solid fa-comments text-blue-400"></i>
+                                    <span>Xgen IM Messenger</span>
+                                </div>
+                                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            </button>
+                            <button onclick="showToast('Launching XGen Drive & Docs...')" class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                                <div class="flex items-center space-x-2.5">
+                                    <i class="fa-solid fa-hard-drive text-purple-400"></i>
+                                    <span>XGen Drive (Cloud)</span>
+                                </div>
+                            </button>
+                            <button onclick="showToast('Opening S/MIME PKI Certificate Vault')" class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                                <div class="flex items-center space-x-2.5">
+                                    <i class="fa-solid fa-key text-emerald-400"></i>
+                                    <span>PKI Key Manager</span>
+                                </div>
+                            </button>
+                            <button onclick="showToast('Opening DRM Permission Panel')" class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition">
+                                <div class="flex items-center space-x-2.5">
+                                    <i class="fa-solid fa-user-shield text-amber-400"></i>
+                                    <span>DRM Protection Rules</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- EAI Linguistic Languages Slabs -->
+                    <div class="pt-2 border-t border-slate-800">
+                        <p class="px-3 text-[10px] font-black uppercase text-slate-500 tracking-wider mb-1">EAI Native Gateways</p>
+                        <div class="flex flex-wrap gap-1 px-3">
+                            <span class="text-[9px] bg-slate-800 text-blue-300 font-bold px-2 py-0.5 rounded border border-slate-700">हिन्दी (Hindi)</span>
+                            <span class="text-[9px] bg-slate-800 text-purple-300 font-bold px-2 py-0.5 rounded border border-slate-700">ગુજરાતી</span>
+                            <span class="text-[9px] bg-slate-800 text-emerald-300 font-bold px-2 py-0.5 rounded border border-slate-700">தமிழ்</span>
+                            <span class="text-[9px] bg-slate-800 text-amber-300 font-bold px-2 py-0.5 rounded border border-slate-700">العربية</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Left Sidebar Footer Storage Meter -->
+                <div class="p-3 border-t border-slate-800 bg-slate-900/90">
+                    <div class="flex justify-between text-[11px] font-semibold text-slate-300 mb-1">
+                        <span>Quota Used</span>
+                        <span class="text-blue-400 font-bold">14.2 / 25 GB</span>
+                    </div>
+                    <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden flex">
+                        <div class="h-full bg-blue-500 w-[56%]" title="Mail Data"></div>
+                        <div class="h-full bg-amber-400 w-[10%]" title="Attachments"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] text-slate-500 mt-2">
+                        <span>56% Capacity</span>
+                        <button onclick="showToast('Requesting Storage Boost...')" class="text-blue-400 font-bold hover:underline">Upgrade</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- COLUMN 2: MIDDLE EMAIL LIST PANE -->
+            <section class="w-96 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0">
+                
+                <!-- Filter Toolbar -->
+                <div class="p-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 flex flex-col space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <input type="checkbox" onclick="toggleSelectAll(this)" class="rounded text-blue-600 focus:ring-blue-500 cursor-pointer" title="Select All">
+                            <h2 class="text-xs font-bold text-slate-800 dark:text-slate-100 uppercase tracking-wider" id="current-folder-title">Inbox</h2>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <button onclick="showToast('Refreshing inbox...')" class="p-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-white rounded hover:bg-slate-200 dark:hover:bg-slate-800 transition" title="Refresh">
+                                <i class="fa-solid fa-arrows-rotate text-xs"></i>
+                            </button>
+                            <button onclick="showToast('Sorted by date')" class="p-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-white rounded hover:bg-slate-200 dark:hover:bg-slate-800 transition" title="Sort Order">
+                                <i class="fa-solid fa-arrow-down-short-wide text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Category Pills -->
+                    <div class="flex items-center space-x-1.5 text-xs overflow-x-auto custom-scrollbar pb-1">
+                        <button onclick="setCategoryFilter('all')" id="cat-all" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-bold text-[11px] shrink-0">All Mails</button>
+                        <button onclick="setCategoryFilter('unread')" id="cat-unread" class="px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-[11px] shrink-0 hover:bg-slate-300">Unread</button>
+                        <button onclick="setCategoryFilter('smime')" id="cat-smime" class="px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-[11px] shrink-0 hover:bg-slate-300"><i class="fa-solid fa-shield-halved text-blue-600 mr-1"></i>S/MIME</button>
+                        <button onclick="setCategoryFilter('otp')" id="cat-otp" class="px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-[11px] shrink-0 hover:bg-slate-300"><i class="fa-solid fa-key text-emerald-600 mr-1"></i>OTP</button>
+                    </div>
+                </div>
+
+                <!-- Scrollable Email List Container -->
+                <div class="flex-1 overflow-y-auto custom-scrollbar divide-y divide-slate-100 dark:divide-slate-800/60" id="desktop-email-list">
+                    
+                    <!-- EMAIL ITEM 1: Devanagari EAI + OTP Protected -->
+                    <div onclick="selectEmail('1', this)" class="email-row unread otp smime active-row p-3.5 bg-blue-50/60 dark:bg-blue-950/30 cursor-pointer border-l-4 border-blue-600 transition hover:bg-slate-100 dark:hover:bg-slate-800/80">
+                        <div class="flex items-start justify-between mb-1">
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" onclick="event.stopPropagation()" class="rounded text-blue-600">
+                                <span class="font-bold text-xs text-slate-900 dark:text-slate-100">विकास शर्मा (Vikas)</span>
+                            </div>
+                            <span class="text-[10px] text-slate-400 font-medium">10:30 AM</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5 mb-1">
+                            <span class="text-[9px] bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-300 font-bold px-1.5 py-0.2 rounded border border-blue-200 dark:border-blue-800">Devanagari EAI</span>
+                            <span class="text-[9px] bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-bold px-1.5 py-0.2 rounded border border-emerald-200 dark:border-emerald-800"><i class="fa-solid fa-key mr-0.5"></i>OTP Locked</span>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 line-clamp-1">वार्षिक DPDP compliance एवं डेटा संप्रभुता समीक्षा</h4>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5">नमस्ते अशोक जी, Data Ingenious Global Limited सर्वर क्लस्टर की सुरक्षा रिपोर्ट जारी कर दी गई है...</p>
+                        <div class="flex items-center justify-between mt-2 text-[10px] text-slate-400">
+                            <span class="flex items-center gap-1 font-mono text-slate-600 dark:text-slate-400"><i class="fa-solid fa-paperclip text-slate-400"></i> DPDP_Audit_2026.pdf</span>
+                            <button onclick="event.stopPropagation(); toggleStarRow(this)" class="text-amber-400 hover:text-amber-500">
+                                <i class="fa-solid fa-star"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- EMAIL ITEM 2: Enterprise HAL S/MIME PKI -->
+                    <div onclick="selectEmail('2', this)" class="email-row unread smime vip p-3.5 bg-white dark:bg-slate-900 cursor-pointer border-l-4 border-transparent transition hover:bg-slate-100 dark:hover:bg-slate-800/80">
+                        <div class="flex items-start justify-between mb-1">
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" onclick="event.stopPropagation()" class="rounded text-blue-600">
+                                <span class="font-bold text-xs text-slate-900 dark:text-slate-100">Rajeev Agarwal (HAL)</span>
+                            </div>
+                            <span class="text-[10px] text-slate-400 font-medium">09:15 AM</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5 mb-1">
+                            <span class="text-[9px] bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-bold px-1.5 py-0.2 rounded">S/MIME PKI</span>
+                            <span class="text-[9px] bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-300 font-bold px-1.5 py-0.2 rounded">DRM: No Forward</span>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 line-clamp-1">Re: Q3 Enterprise Email Renewal & SLA Confirmation</h4>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5">Hi Ashok, happy to confirm terms carried forward under our 99.9% uptime SLA. Delivering to customer node...</p>
+                        <div class="flex items-center justify-between mt-2 text-[10px] text-slate-400">
+                            <span class="text-slate-400 font-mono">rajeev@hal-india.co.in</span>
+                            <button onclick="event.stopPropagation(); toggleStarRow(this)" class="text-amber-400 hover:text-amber-500">
+                                <i class="fa-solid fa-star"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- EMAIL ITEM 3: Gujarati Vernacular EAI Gateway -->
+                    <div onclick="selectEmail('3', this)" class="email-row read p-3.5 bg-white dark:bg-slate-900 cursor-pointer border-l-4 border-transparent transition hover:bg-slate-100 dark:hover:bg-slate-800/80">
+                        <div class="flex items-start justify-between mb-1">
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" onclick="event.stopPropagation()" class="rounded text-blue-600">
+                                <span class="font-semibold text-xs text-slate-800 dark:text-slate-200">રાજેશ પટેલ (Rajesh Patel)</span>
+                            </div>
+                            <span class="text-[10px] text-slate-400">Yesterday</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5 mb-1">
+                            <span class="text-[9px] bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-300 font-bold px-1.5 py-0.2 rounded">Gujarati EAI</span>
+                        </div>
+                        <h4 class="text-xs font-semibold text-slate-700 dark:text-slate-300 line-clamp-1">નવા ડેટા સેન્ટર સર્વર આર્કિટેક્ચર (Server Architecture)</h4>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5">આદરણીય Ashok ji, XgenPlus Private Cloud infrastructure સેટઅપ અંગે વિસ્તૃત અહેવાલ...</p>
+                        <div class="flex items-center justify-between mt-2 text-[10px] text-slate-400">
+                            <span class="font-mono text-slate-400">rajesh@એક્સજેન.ભારત</span>
+                            <button onclick="event.stopPropagation(); toggleStarRow(this)" class="text-slate-300 hover:text-amber-400">
+                                <i class="fa-solid fa-star"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- EMAIL ITEM 4: Arabic International EAI Gateway -->
+                    <div onclick="selectEmail('4', this)" class="email-row read smime p-3.5 bg-white dark:bg-slate-900 cursor-pointer border-l-4 border-transparent transition hover:bg-slate-100 dark:hover:bg-slate-800/80">
+                        <div class="flex items-start justify-between mb-1">
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" onclick="event.stopPropagation()" class="rounded text-blue-600">
+                                <span class="font-semibold text-xs text-slate-800 dark:text-slate-200">طارق المنصور (Tariq Al)</span>
+                            </div>
+                            <span class="text-[10px] text-slate-400">04 Nov</span>
+                        </div>
+                        <div class="flex items-center space-x-1.5 mb-1">
+                            <span class="text-[9px] bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300 font-bold px-1.5 py-0.2 rounded">RFC 6530 EAI</span>
+                        </div>
+                        <h4 class="text-xs font-semibold text-slate-700 dark:text-slate-300 line-clamp-1">إشعار اعتماد بروتوكول البريد الدولي RFC 6530</h4>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5">تم الاتصال بخوادم XGenPlus بنجاح مع تفعيل نظام التشفير التلقائي...</p>
+                        <div class="flex items-center justify-between mt-2 text-[10px] text-slate-400">
+                            <span class="font-mono text-slate-400">tariq@إكس-جين.عرب</span>
+                            <button onclick="event.stopPropagation(); toggleStarRow(this)" class="text-slate-300 hover:text-amber-400">
+                                <i class="fa-solid fa-star"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- COLUMN 3: RIGHT READING PANE (FULL EMAIL DETAIL VIEW) -->
+            <main class="flex-1 bg-slate-50 dark:bg-slate-950 flex flex-col overflow-hidden">
+                
+                <!-- Detail Toolbar Header -->
+                <div class="h-12 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 flex items-center justify-between shrink-0">
+                    <!-- Action Toolbar -->
+                    <div class="flex items-center space-x-2">
+                        <button onclick="showToast('Replying to mail...')" class="flex items-center space-x-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
+                            <i class="fa-solid fa-reply"></i>
+                            <span>Reply</span>
+                        </button>
+                        <button onclick="showToast('Replying to all...')" class="px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition border border-slate-200 dark:border-slate-700">
+                            <i class="fa-solid fa-reply-all mr-1"></i> Reply All
+                        </button>
+                        <button onclick="showToast('Forwarding encrypted message...')" class="px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition border border-slate-200 dark:border-slate-700">
+                            <i class="fa-solid fa-share mr-1"></i> Forward
+                        </button>
+
+                        <div class="h-4 w-px bg-slate-300 dark:bg-slate-700 mx-1"></div>
+
+                        <button onclick="showToast('Moved to Trash')" class="p-1.5 text-slate-500 hover:text-rose-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Delete">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                        <button onclick="showToast('Archived message')" class="p-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Archive">
+                            <i class="fa-solid fa-box-archive text-sm"></i>
+                        </button>
+                        <button onclick="showToast('Marked as Spam')" class="p-1.5 text-slate-500 hover:text-amber-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Spam">
+                            <i class="fa-solid fa-circle-exclamation text-sm"></i>
+                        </button>
+                    </div>
+
+                    <!-- Right Metadata Badge -->
+                    <div class="flex items-center space-x-2">
+                        <span class="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2.5 py-1 rounded-full border border-emerald-200 dark:border-emerald-800 flex items-center gap-1">
+                            <i class="fa-solid fa-lock text-xs"></i> S/MIME Encrypted Body
+                        </span>
+                        <button onclick="showToast('Printing email preview...')" class="p-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                            <i class="fa-solid fa-print text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Scrollable Email Reading Area -->
+                <div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
+                    
+                    <!-- Email Subject & Title Header -->
+                    <div class="border-b border-slate-200 dark:border-slate-800 pb-4 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h1 class="text-xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight" id="detail-view-subject">
+                                वार्षिक DPDP compliance एवं डेटा संप्रभुता समीक्षा
+                            </h1>
+                            <span class="text-xs text-slate-400 font-medium" id="detail-view-date">Friday, 06 Nov 2026, 10:30 AM IST</span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2 text-xs">
+                            <span class="bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-300 font-bold px-2 py-0.5 rounded border border-blue-200 dark:border-blue-800">Hindi EAI Gateway</span>
+                            <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 font-bold px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">India Data Sovereign Node</span>
+                            <span class="bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300 font-bold px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800">OTP Mandatory for File View</span>
+                        </div>
+                    </div>
+
+                    <!-- Sender Profile Detail Card -->
+                    <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-start justify-between">
+                        <div class="flex items-start space-x-3.5">
+                            <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 text-white flex items-center justify-center font-black text-base shadow" id="detail-view-avatar">
+                                वि
+                            </div>
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <h3 class="text-sm font-bold text-slate-900 dark:text-slate-100" id="detail-view-sender-name">विकास शर्मा (Vikas Sharma)</h3>
+                                    <i class="fa-solid fa-circle-check text-blue-500 text-xs" title="Verified EAI Address"></i>
+                                </div>
+                                <p class="text-xs text-blue-600 dark:text-blue-400 font-mono" id="detail-view-sender-email">vikas@एक्सजेन.भारत</p>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">To: <span class="font-mono text-slate-700 dark:text-slate-300">अशोक@एक्सजेन.भारत</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Security Verification Certificate Dropdown trigger -->
+                        <button onclick="openSecurityModal()" class="text-right bg-slate-50 dark:bg-slate-800/80 p-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 transition cursor-pointer">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold">Security Pass</p>
+                            <div class="flex items-center space-x-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                                <i class="fa-solid fa-shield-check"></i>
+                                <span>RSA-4096 Signed</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Email Main Body Container -->
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm text-slate-800 dark:text-slate-200 leading-relaxed text-sm space-y-4" id="detail-view-body">
+                        <p>आदरणीय अशोक जी,</p>
+                        <p>Data Ingenious Global Limited के Jaipur cloud node पर स्थित enterprise XgenPlus servers की <strong>वार्षिक DPDP Act (Digital Personal Data Protection) एवं Data Sovereignty ऑडिट रिपोर्ट</strong> सफलतापूर्वक पूर्ण कर ली गई है।</p>
+                        
+                        <div class="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl border-l-4 border-blue-600 space-y-2">
+                            <h4 class="font-bold text-xs uppercase tracking-wider text-blue-600 dark:text-blue-400">प्रमुख सुरक्षा बिंदु:</h4>
+                            <ul class="list-disc ml-4 space-y-1 text-xs text-slate-600 dark:text-slate-300">
+                                <li><strong>Vernacular EAI Delivery:</strong> RFC 6530 standards के अनुरूप सभी देवनागरी ईमेल पते बिना किसी ASCII alias conversion के सम्प्रेषित हो रहे हैं।</li>
+                                <li><strong>DPDP Compliance:</strong> यूजर लॉग्स एवं व्यक्तिगत डेटा पूरी तरह से masked एवं local encryption key के साथ सुरक्षित हैं।</li>
+                                <li><strong>DRM Governance:</strong> इस ईमेल के साथ संलग्न ऑडिट फ़ाइल केवल OTP ऑथेंटिकेशन के बाद ही डाउनलोड की जा सकती है।</li>
+                            </ul>
+                        </div>
+
+                        <p>कृपया संलग्नक डाउनलोड करने के लिए OTP जनरेट बटन का उपयोग करें।</p>
+                        
+                        <p class="pt-2 text-xs text-slate-500 border-t border-slate-100 dark:border-slate-800">
+                            सादर,<br>
+                            <strong>विकास शर्मा</strong><br>
+                            Chief Information Security Officer (CISO)<br>
+                            Data Ingenious Global Limited
+                        </p>
+                    </div>
+
+                    <!-- Attachment Card Box -->
+                    <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                                <i class="fa-solid fa-paperclip text-blue-600"></i>
+                                <span>Encrypted Attachment (1 File)</span>
+                            </h4>
+                            <span class="text-[10px] bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300 font-bold px-2 py-0.5 rounded">OTP REQUIRED FOR DECRYPTION</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-lg bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-400 flex items-center justify-center font-bold text-lg">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-slate-800 dark:text-slate-200">DPDP_Audit_Sovereignty_2026.pdf</p>
+                                    <p class="text-[10px] text-slate-400">3.4 MB • AES 256-bit Encrypted</p>
+                                </div>
+                            </div>
+
+                            <button onclick="showToast('OTP code 749201 sent to registered phone')" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition shadow flex items-center space-x-1.5">
+                                <i class="fa-solid fa-key text-xs"></i>
+                                <span>Enter OTP & Download</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+    </div>
+
+    <!-- ================= MODAL 1: FLOATING DESKTOP COMPOSER ================= -->
+    <div id="composer-modal" class="fixed bottom-0 right-10 w-[620px] bg-white dark:bg-slate-900 rounded-t-2xl shadow-2xl border border-slate-300 dark:border-slate-700 z-50 transition-all duration-300 transform translate-y-full opacity-0">
+        <!-- Composer Header Bar -->
+        <div class="bg-slate-900 text-white p-3 rounded-t-2xl flex items-center justify-between cursor-pointer" onclick="toggleComposerMinimize()">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-pen-to-square text-blue-400 text-xs"></i>
+                <span class="text-xs font-bold tracking-wide">New XgenPlus Message</span>
+            </div>
+            <div class="flex items-center space-x-2 text-slate-400">
+                <button onclick="event.stopPropagation(); closeComposer()" class="hover:text-white p-1"><i class="fa-solid fa-xmark text-xs"></i></button>
+            </div>
+        </div>
+
+        <!-- Composer Body -->
+        <div class="p-4 space-y-3" id="composer-content">
+            <!-- From Identity Selector -->
+            <div class="flex items-center space-x-2 border-b border-slate-200 dark:border-slate-800 pb-2">
+                <span class="text-xs font-bold text-slate-400 w-16">From:</span>
+                <select id="composer-from-select" class="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-mono font-bold text-slate-800 dark:text-slate-200 p-1.5 rounded-lg">
+                    <option value="अशोक@एक्सजेन.भारत">अशोक@एक्सजेन.भारत (Vernacular Devanagari EAI)</option>
+                    <option value="ajay@datamail.in">ajay@datamail.in (Standard Enterprise Domain)</option>
+                    <option value="rajesh@એક્સજેન.ભારત">rajesh@એક્સજેન.ભારત (Gujarati EAI Gateway)</option>
+                </select>
+            </div>
+
+            <!-- To Input with Language Assistant -->
+            <div class="flex items-center space-x-2 border-b border-slate-200 dark:border-slate-800 pb-2">
+                <span class="text-xs font-bold text-slate-400 w-16">To (EAI):</span>
+                <input type="text" value="सुरेश@एक्सजेन.भारत" class="flex-1 bg-transparent text-xs font-semibold text-slate-800 dark:text-slate-200 focus:outline-none">
+                <button onclick="showToast('Active Devanagari Script IME Assistant')" class="text-[10px] bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-300 font-bold px-2 py-1 rounded border border-blue-200 dark:border-blue-800">
+                    <i class="fa-solid fa-keyboard mr-1"></i> Vernacular IME
+                </button>
+            </div>
+
+            <!-- Subject Bar -->
+            <div class="flex items-center space-x-2 border-b border-slate-200 dark:border-slate-800 pb-2">
+                <span class="text-xs font-bold text-slate-400 w-16">Subject:</span>
+                <input type="text" placeholder="Enter message subject..." class="flex-1 bg-transparent text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none">
+            </div>
+
+            <!-- DRM & Security Toolbar -->
+            <div class="bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Security Controls:</span>
+                <div class="flex items-center space-x-3">
+                    <label class="flex items-center space-x-1.5 cursor-pointer">
+                        <input type="checkbox" checked class="rounded text-blue-600">
+                        <span class="text-[11px] font-medium text-slate-700 dark:text-slate-300">Require OTP</span>
+                    </label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer">
+                        <input type="checkbox" checked class="rounded text-blue-600">
+                        <span class="text-[11px] font-medium text-slate-700 dark:text-slate-300">S/MIME Digital Sign</span>
+                    </label>
+                    <label class="flex items-center space-x-1.5 cursor-pointer">
+                        <input type="checkbox" class="rounded text-blue-600">
+                        <span class="text-[11px] font-medium text-rose-600 dark:text-rose-400 font-bold">DRM: No Forward</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- WYSIWYG Editor Toolbar Mock -->
+            <div class="flex items-center space-x-2 border-b border-slate-200 dark:border-slate-800 pb-1 text-slate-500 text-xs">
+                <button class="p-1 hover:text-blue-600"><i class="fa-solid fa-bold"></i></button>
+                <button class="p-1 hover:text-blue-600"><i class="fa-solid fa-italic"></i></button>
+                <button class="p-1 hover:text-blue-600"><i class="fa-solid fa-underline"></i></button>
+                <button class="p-1 hover:text-blue-600"><i class="fa-solid fa-link"></i></button>
+                <button class="p-1 hover:text-blue-600"><i class="fa-solid fa-list-ol"></i></button>
+                <div class="h-3 w-px bg-slate-300 dark:bg-slate-700"></div>
+                <button onclick="showToast('Attachment uploaded')" class="p-1 hover:text-blue-600"><i class="fa-solid fa-paperclip"></i></button>
+            </div>
+
+            <!-- Message Area -->
+            <textarea rows="6" placeholder="Write your message here in English, Hindi, or any Indian vernacular language..." class="w-full bg-transparent text-xs text-slate-800 dark:text-slate-200 focus:outline-none resize-none"></textarea>
+
+            <!-- Composer Actions Footer -->
+            <div class="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-800">
+                <button onclick="closeComposer()" class="text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    Discard Draft
+                </button>
+                <button onclick="showToast('Secure EAI Email Transmitted Successfully!'); closeComposer();" class="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold text-xs shadow-md transition flex items-center space-x-2">
+                    <span>Send Message</span>
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: S/MIME SECURITY & CERTIFICATE VAULT ================= -->
+    <div id="security-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 space-y-5 border border-slate-200 dark:border-slate-800 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-extrabold text-slate-900 dark:text-slate-100">XGen PKI Certificate & Security Vault</h3>
+                        <p class="text-[10px] text-slate-400">Data Ingenious Global Limited • Certified Sovereign Keys</p>
+                    </div>
+                </div>
+                <button onclick="closeSecurityModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <!-- Certificate Info -->
+                <div class="bg-emerald-50 dark:bg-emerald-950/40 p-4 rounded-2xl border border-emerald-200 dark:border-emerald-800 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-emerald-900 dark:text-emerald-200">Active Digital Certificate (S/MIME)</span>
+                        <span class="text-[9px] bg-emerald-200 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 font-bold px-2 py-0.5 rounded">VALID & VERIFIED</span>
+                    </div>
+                    <p class="text-xs font-mono text-emerald-800 dark:text-emerald-300">Fingerprint: 4F:8A:99:C2:10:9B:EE:74:2B:00:19</p>
+                    <p class="text-[11px] text-emerald-700 dark:text-emerald-400">Issuer: Data Ingenious Sovereign PKI Root CA 2026</p>
+                </div>
+
+                <!-- Feature Grid -->
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div class="bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1">
+                        <p class="font-bold text-slate-800 dark:text-slate-200">xCode Passkey (2FA)</p>
+                        <p class="font-mono text-blue-600 dark:text-blue-400 font-extrabold">XG-882049</p>
+                        <p class="text-[10px] text-slate-400">Refreshes in 42 seconds</p>
+                    </div>
+
+                    <div class="bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1">
+                        <p class="font-bold text-slate-800 dark:text-slate-200">DPDP Data Protection</p>
+                        <p class="text-emerald-600 dark:text-emerald-400 font-bold">Compliant Mode</p>
+                        <p class="text-[10px] text-slate-400">Identity logs masked by default</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+                <button onclick="closeSecurityModal()" class="px-5 py-2 bg-slate-900 text-white dark:bg-slate-800 font-bold text-xs rounded-xl hover:bg-slate-800">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="desktop-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-5 py-2.5 rounded-full shadow-2xl z-50 opacity-0 pointer-events-none transition-all duration-300 border border-slate-700 flex items-center space-x-2">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+        <span id="desktop-toast-msg" class="font-medium">Notification message</span>
+    </div>
+
+    <!-- APPLICATION SCRIPTS -->
+    <script>
+        // Data Payload for Dynamic Mail Reading Pane
+        const emailData = {
+            '1': {
+                subject: 'वार्षिक DPDP compliance एवं डेटा संप्रभुता समीक्षा',
+                date: 'Friday, 06 Nov 2026, 10:30 AM IST',
+                senderName: 'विकास शर्मा (Vikas Sharma)',
+                senderEmail: 'vikas@एक्सजेन.भारत',
+                avatar: 'वि',
+                avatarBg: 'from-amber-500 to-orange-600',
+                body: `<p>आदरणीय अशोक जी,</p>
+                       <p>Data Ingenious Global Limited के Jaipur cloud node पर स्थित enterprise XgenPlus servers की <strong>वार्षिक DPDP Act (Digital Personal Data Protection) एवं Data Sovereignty ऑडिट रिपोर्ट</strong> सफलतापूर्वक पूर्ण कर ली गई है।</p>
+                       <div class="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl border-l-4 border-blue-600 space-y-2">
+                           <h4 class="font-bold text-xs uppercase tracking-wider text-blue-600 dark:text-blue-400">प्रमुख सुरक्षा बिंदु:</h4>
+                           <ul class="list-disc ml-4 space-y-1 text-xs text-slate-600 dark:text-slate-300">
+                               <li><strong>Vernacular EAI Delivery:</strong> RFC 6530 standards के अनुरूप सभी देवनागरी ईमेल पते बिना किसी ASCII alias conversion के सम्प्रेषित हो रहे हैं।</li>
+                               <li><strong>DPDP Compliance:</strong> यूजर लॉग्स एवं व्यक्तिगत डेटा पूरी तरह से masked एवं local encryption key के साथ सुरक्षित हैं।</li>
+                               <li><strong>DRM Governance:</strong> इस ईमेल के साथ संलग्न ऑडिट फ़ाइल केवल OTP ऑथेंटिकेशन के बाद ही डाउनलोड की जा सकती है।</li>
+                           </ul>
+                       </div>
+                       <p>कृपया संलग्नक डाउनलोड करने के लिए OTP जनरेट बटन का उपयोग करें।</p>
+                       <p class="pt-2 text-xs text-slate-500 border-t border-slate-100 dark:border-slate-800">
+                           सादर,<br><strong>विकास शर्मा</strong><br>Chief Information Security Officer (CISO)
+                       </p>`
+            },
+            '2': {
+                subject: 'Re: Q3 Enterprise Email Renewal & SLA Confirmation',
+                date: 'Friday, 06 Nov 2026, 09:15 AM IST',
+                senderName: 'Rajeev Agarwal (HAL Corp IT)',
+                senderEmail: 'rajeev@hal-india.co.in',
+                avatar: 'HAL',
+                avatarBg: 'from-blue-600 to-indigo-700',
+                body: `<p>Dear Ashok,</p>
+                       <p>We are pleased to confirm the renewal terms for XgenPlus Enterprise Email across HAL divisions for Q3 2026. The guaranteed 99.9% uptime SLA and native S/MIME PKI integration meet all defense IT benchmarks.</p>
+                       <p>Best regards,<br><strong>Rajeev Agarwal</strong><br>Head - Corporate IT, HAL</p>`
+            },
+            '3': {
+                subject: 'નવા ડેટા સેન્ટર સર્વર આર્કિટેક્ચર (Server Architecture)',
+                date: 'Thursday, 05 Nov 2026, 04:45 PM IST',
+                senderName: 'રાજેશ પટેલ (Rajesh Patel)',
+                senderEmail: 'rajesh@એક્સજેન.ભારત',
+                avatar: 'રા',
+                avatarBg: 'from-purple-600 to-indigo-800',
+                body: `<p>આદરણીય Ashok ji,</p>
+                       <p>XgenPlus Private Cloud infrastructure સેટઅપ અંગે વિસ્તૃત અહેવાલ મોકલી રહ્યો છું. Full Gujarati IDN & EAI gateway configured successfully.</p>`
+            },
+            '4': {
+                subject: 'إشعار اعتماد بروتوكول البريد الدولي RFC 6530',
+                date: 'Wednesday, 04 Nov 2026, 11:20 AM IST',
+                senderName: 'طارق المنصور (Tariq Al)',
+                senderEmail: 'tariq@إكس-جين.عرب',
+                avatar: 'ط',
+                avatarBg: 'from-emerald-600 to-teal-800',
+                body: `<p>مرحباً بك،</p>
+                       <p>تم الاتصال بخوادم XGenPlus بنجاح مع تفعيل نظام التشفير التلقائي وخدمة EAI البريدية.</p>`
+            }
+        };
+
+        // Select Mail Item Trigger
+        function selectEmail(id, element) {
+            const item = emailData[id];
+            if (!item) return;
+
+            // Highlight Selected Row
+            document.querySelectorAll('.email-row').forEach(row => {
+                row.classList.remove('active-row', 'bg-blue-50/60', 'dark:bg-blue-950/30', 'border-blue-600');
+                row.classList.add('border-transparent');
+            });
+            element.classList.add('active-row', 'bg-blue-50/60', 'dark:bg-blue-950/30', 'border-blue-600');
+            element.classList.remove('border-transparent');
+
+            // Populate Reading View
+            document.getElementById('detail-view-subject').innerText = item.subject;
+            document.getElementById('detail-view-date').innerText = item.date;
+            document.getElementById('detail-view-sender-name').innerText = item.senderName;
+            document.getElementById('detail-view-sender-email').innerText = item.senderEmail;
+            document.getElementById('detail-view-avatar').innerText = item.avatar;
+            document.getElementById('detail-view-avatar').className = `w-11 h-11 rounded-xl bg-gradient-to-tr ${item.avatarBg} text-white flex items-center justify-center font-black text-base shadow`;
+            document.getElementById('detail-view-body').innerHTML = item.body;
+        }
+
+        // Sidebar Folder Navigation Trigger
+        function switchFolder(folderKey) {
+            const titleMap = {
+                'inbox': 'Inbox',
+                'starred': 'Starred Mails',
+                'sent': 'Sent Items',
+                'drafts': 'Drafts',
+                'archive': 'Archive',
+                'trash': 'Trash'
+            };
+            document.getElementById('current-folder-title').innerText = titleMap[folderKey] || 'Inbox';
+            showToast(`Loaded ${titleMap[folderKey]} folder`);
+        }
+
+        // Category Filter Pills Trigger
+        function setCategoryFilter(cat) {
+            const categories = ['all', 'unread', 'smime', 'otp'];
+            categories.forEach(c => {
+                const btn = document.getElementById(`cat-${c}`);
+                if (c === cat) {
+                    btn.className = 'px-2.5 py-1 rounded-lg bg-blue-600 text-white font-bold text-[11px] shrink-0';
+                } else {
+                    btn.className = 'px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-[11px] shrink-0 hover:bg-slate-300';
+                }
+            });
+
+            const rows = document.querySelectorAll('.email-row');
+            rows.forEach(row => {
+                if (cat === 'all') {
+                    row.style.display = 'block';
+                } else {
+                    if (row.classList.contains(cat)) {
+                        row.style.display = 'block';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Live Desktop Mail Search Filter
+        function filterEmails() {
+            const query = document.getElementById('desktop-search').value.toLowerCase();
+            const rows = document.querySelectorAll('.email-row');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    row.style.display = 'block';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Floating Composer Triggers
+        function openComposer() {
+            const composer = document.getElementById('composer-modal');
+            composer.classList.remove('translate-y-full', 'opacity-0');
+        }
+
+        function closeComposer() {
+            const composer = document.getElementById('composer-modal');
+            composer.classList.add('translate-y-full', 'opacity-0');
+        }
+
+        function toggleComposerMinimize() {
+            const content = document.getElementById('composer-content');
+            content.classList.toggle('hidden');
+        }
+
+        // Security PKI Vault Modal
+        function openSecurityModal() {
+            const modal = document.getElementById('security-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeSecurityModal() {
+            const modal = document.getElementById('security-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        // Dark / Light Mode Toggle
+        let isDarkMode = false;
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            const html = document.documentElement;
+            const icon = document.getElementById('dark-mode-icon');
+            if (isDarkMode) {
+                html.classList.add('dark');
+                icon.className = 'fa-solid fa-sun text-amber-400 text-sm';
+                showToast('Activated Dark Mode Theme');
+            } else {
+                html.classList.remove('dark');
+                icon.className = 'fa-solid fa-moon text-sm';
+                showToast('Activated Light Mode Theme');
+            }
+        }
+
+        // Toggle Sidebar Collapse
+        let isSidebarOpen = true;
+        function toggleSidebar() {
+            const sidebar = document.getElementById('main-sidebar');
+            if (isSidebarOpen) {
+                sidebar.classList.add('-ml-64');
+            } else {
+                sidebar.classList.remove('-ml-64');
+            }
+            isSidebarOpen = !isSidebarOpen;
+        }
+
+        function toggleStarRow(starIcon) {
+            if (starIcon.classList.contains('text-amber-400')) {
+                starIcon.classList.remove('text-amber-400');
+                starIcon.classList.add('text-slate-300');
+                showToast('Removed from Starred');
+            } else {
+                starIcon.classList.remove('text-slate-300');
+                starIcon.classList.add('text-amber-400');
+                showToast('Starred message');
+            }
+        }
+
+        function toggleSelectAll(masterCheckbox) {
+            const checkboxes = document.querySelectorAll('.email-row input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = masterCheckbox.checked);
+            showToast(masterCheckbox.checked ? 'Selected all messages' : 'Deselected all messages');
+        }
+
+        // Account Switcher Quick Toggle
+        let isPrimaryAccount = true;
+        function openAccountDropdown() {
+            isPrimaryAccount = !isPrimaryAccount;
+            const nameEl = document.getElementById('header-user-name');
+            const emailEl = document.getElementById('header-user-email');
+            const avatarEl = document.getElementById('header-avatar');
+
+            if (isPrimaryAccount) {
+                nameEl.innerText = "अशोक कुमार (EAI)";
+                emailEl.innerText = "अशोक@एक्सजेन.भारत";
+                avatarEl.innerText = "AK";
+                showToast('Switched to Devanagari EAI Identity');
+            } else {
+                nameEl.innerText = "Ajay Data (Enterprise)";
+                emailEl.innerText = "ajay@datamail.in";
+                avatarEl.innerText = "AD";
+                showToast('Switched to Standard Enterprise Mailbox');
+            }
+        }
+
+        // Toast Helper Function
+        let toastTimer;
+        function showToast(msg) {
+            const toast = document.getElementById('desktop-toast');
+            const toastMsg = document.getElementById('desktop-toast-msg');
+            toastMsg.innerText = msg;
+            
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

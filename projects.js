@@ -29,11 +29,94 @@ async function loadPortfolioData() {
                         </span>
                     </div>
 
-                    <!-- <div class="project-art">
-                        <span class="project-art-icon">
-                            ${getProjectIcon(project.category)}
-                        </span>
-                    </div> -->
+                    <div class="project-carousel"
+                         data-carousel="${index}"
+                         data-showcase="${escapeHTML(project.showcase || "")}">
+
+                        <div class="carousel-track">
+                            ${(project.images || []).length
+                                ? project.images.map((image, i) => `
+                                    <div class="carousel-slide ${i === 0 ? "active" : ""}">
+                                        <img
+                                            src="${escapeHTML(image)}"
+                                            alt="${escapeHTML(project.name)} screenshot ${i + 1}"
+                                            loading="lazy"
+                                            role="button"
+                                            tabindex="0"
+                                        />
+                                    </div>
+                                `).join("")
+                                : project.showcaseImage
+                                ? `
+                                    <div class="carousel-slide active carousel-showcase-image">
+                                        <img
+                                            src="${escapeHTML(project.showcaseImage)}"
+                                            alt="${escapeHTML(project.name)} showcase preview"
+                                            loading="lazy"
+                                            role="button"
+                                            tabindex="0"
+                                        />
+                                    </div>
+                                `
+                                : project.showcase && /\.html?(?:[?#]|$)/i.test(project.showcase)
+                                ? `
+                                    <div class="carousel-slide active carousel-showcase-preview"
+                                         role="button"
+                                         tabindex="0"
+                                         aria-label="Open ${escapeHTML(project.name)} showcase">
+                                        <iframe
+                                            src="${escapeHTML(project.showcase)}"
+                                            title="${escapeHTML(project.name)} showcase preview"
+                                            loading="lazy"
+                                            sandbox="allow-scripts"
+                                            tabindex="-1"
+                                            aria-hidden="true">
+                                        </iframe>
+                                    </div>
+                                `
+                                : `
+                                    <div class="carousel-slide active carousel-fallback">
+                                        <span class="project-art-icon">
+                                            ${getProjectIcon(project.category)}
+                                        </span>
+                                    </div>
+                                `
+                            }
+                        </div>
+
+                        ${project.showcase ? `
+                            <button class="showcase-badge" type="button"
+                                    aria-label="Open ${escapeHTML(project.name)} showcase">
+                                <span aria-hidden="true">&#9654;</span>
+                                Project showcase
+                            </button>
+                        ` : ""}
+
+                        ${(project.images || []).length > 1 ? `
+                            <button class="carousel-btn prev"
+                                    data-direction="-1"
+                                    aria-label="Previous image">
+                                &#10094;
+                            </button>
+
+                            <button class="carousel-btn next"
+                                    data-direction="1"
+                                    aria-label="Next image">
+                                &#10095;
+                            </button>
+
+                            <div class="carousel-dots">
+                                ${project.images.map((_, i) => `
+                                    <button
+                                        class="carousel-dot ${i === 0 ? "active" : ""}"
+                                        data-slide="${i}"
+                                        aria-label="Go to image ${i + 1}">
+                                    </button>
+                                `).join("")}
+                            </div>
+                        ` : ""}
+
+                    </div>
 
                     <h3>${escapeHTML(project.name)}</h3>
 
@@ -70,6 +153,7 @@ async function loadPortfolioData() {
 
                 </article>
             `).join("");
+
             
         }
 

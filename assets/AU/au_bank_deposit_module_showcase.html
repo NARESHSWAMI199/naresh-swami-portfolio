@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AU Small Finance Bank - Deposit Module</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for FD Calculator visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        au: {
+                            orange: '#E35316',
+                            orangeDark: '#C7420B',
+                            burgundy: '#6B1D2F',
+                            burgundyLight: '#8B2942',
+                            purpleDark: '#2E0C29',
+                            bg: '#F8FAF9',
+                            card: '#FFFFFF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar for Phone Container */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Device Frame Styling */
+        .phone-frame {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 12px #1e293b;
+        }
+
+        /* Glassmorphism effects */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .au-gradient {
+            background: linear-gradient(135deg, #6B1D2F 0%, #9B2C46 50%, #E35316 100%);
+        }
+
+        .au-gradient-card {
+            background: linear-gradient(135deg, #E35316 0%, #C7420B 100%);
+        }
+        
+        .au-gradient-dark {
+            background: linear-gradient(135deg, #2E0C29 0%, #511540 100%);
+        }
+
+        /* Slider Custom Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #E2E8F0;
+            border-radius: 9999px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #E35316;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -7px;
+            box-shadow: 0 2px 6px rgba(227, 83, 22, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 min-h-screen flex items-center justify-center p-0 sm:p-4 md:p-8 font-sans antialiased text-slate-800">
+
+    <!-- Outer Presentation Container -->
+    <div class="w-full max-w-5xl flex flex-col lg:flex-row items-center justify-center gap-8">
+        
+        <!-- Showcase Info Side Panel (Visible on desktop) -->
+        <div class="hidden lg:flex flex-col text-white max-w-md space-y-6 p-4">
+            <div class="inline-flex items-center space-x-2 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-full text-xs text-orange-400 font-medium">
+                <span class="flex h-2 w-2 rounded-full bg-orange-500 animate-ping"></span>
+                <span>AU 0101 Mobile Banking UI Showcase</span>
+            </div>
+            <div>
+                <h1 class="text-3xl font-extrabold text-white tracking-tight">Deposit Module Portfolio</h1>
+                <p class="text-slate-400 mt-2 text-sm leading-relaxed">
+                    Interactive prototype for AU Small Finance Bank's digital deposit portfolio management system. Includes real-time calculator, active deposit management, rates slab dynamic view, and quick digital services.
+                </p>
+            </div>
+            
+            <div class="space-y-3 pt-2 text-xs text-slate-300">
+                <div class="flex items-center gap-3 bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                    <i class="fa-solid fa-calculator text-orange-400 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-white">Interactive FD Calculator</p>
+                        <p class="text-slate-400">Real-time interest computation with Chart.js visualization.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                    <i class="fa-solid fa-layer-group text-orange-400 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-white">Portfolio Breakdown & Bottom Sheets</p>
+                        <p class="text-slate-400">Detailed active FD/RD management and premature options.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                    <i class="fa-solid fa-[#E35316] fa-mobile-screen text-orange-400 text-lg"></i>
+                    <div>
+                        <p class="font-semibold text-white">Android Material 3 Specs</p>
+                        <p class="text-slate-400">Pixel-perfect status bar, gestures, and bottom navigation design.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Switch Controls for Demo -->
+            <div class="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                <span>Designed for Mobile Screen Resolution</span>
+                <span class="text-orange-400 font-semibold">AU 0101 Redesign</span>
+            </div>
+        </div>
+
+        <!-- Android Smartphone Viewport Mockup -->
+        <div class="relative w-full max-w-[390px] h-[830px] bg-slate-950 rounded-[48px] phone-frame flex flex-col overflow-hidden border-4 border-slate-800">
+            
+            <!-- Android Camera Punch-hole Notch -->
+            <div class="absolute top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-black rounded-full z-50 flex items-center justify-center">
+                <div class="w-1.5 h-1.5 bg-slate-900 rounded-full"></div>
+            </div>
+
+            <!-- Android Status Bar -->
+            <div class="w-full bg-au-purpleDark text-white px-6 pt-3 pb-1 flex items-center justify-between text-xs font-semibold z-40 select-none">
+                <span id="current-time">09:41</span>
+                <div class="flex items-center space-x-2 text-xs">
+                    <i class="fa-solid fa-wifi text-[11px]"></i>
+                    <i class="fa-solid fa-signal text-[11px]"></i>
+                    <i class="fa-solid fa-battery-three-quarters text-sm"></i>
+                </div>
+            </div>
+
+            <!-- Top Header App Bar -->
+            <div class="bg-au-purpleDark text-white px-5 py-3 flex items-center justify-between shadow-md z-30">
+                <div class="flex items-center space-x-3">
+                    <!-- User Profile Avatar -->
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-sm border-2 border-white/20 shadow">
+                        AK
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-1">
+                            <span class="text-xs text-amber-400 font-medium tracking-wide uppercase">AU 0101 Royale</span>
+                            <i class="fa-solid fa-circle-check text-[10px] text-amber-400"></i>
+                        </div>
+                        <h2 class="text-sm font-bold tracking-tight text-white flex items-center gap-1">
+                            Deposit Hub
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Action Icons -->
+                <div class="flex items-center space-x-3 text-slate-200">
+                    <button class="relative p-1.5 rounded-full hover:bg-white/10 transition" onclick="showToast('Notifications checked')">
+                        <i class="fa-regular fa-bell text-lg"></i>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full ring-2 ring-au-purpleDark"></span>
+                    </button>
+                    <button class="p-1.5 rounded-full hover:bg-white/10 transition" onclick="showToast('Customer Support 24x7')">
+                        <i class="fa-regular fa-circle-question text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Scrollable App Canvas -->
+            <div class="flex-1 overflow-y-auto bg-au-bg hide-scrollbar pb-20 relative">
+
+                <!-- AU Gradient Banner & Portfolio Overview -->
+                <div class="au-gradient px-5 pt-4 pb-14 text-white rounded-b-[2.5rem] shadow-lg relative">
+                    <!-- Top Sub Banner Info -->
+                    <div class="flex justify-between items-center mb-3 text-xs text-slate-200">
+                        <span class="flex items-center gap-1.5 font-medium">
+                            <i class="fa-solid fa-shield-halved text-emerald-400"></i> DICGC Insured up to ₹5 Lakh
+                        </span>
+                        <button id="toggle-balance" class="flex items-center space-x-1 bg-white/10 px-2 py-0.5 rounded-full text-[11px] backdrop-blur-sm">
+                            <i class="fa-solid fa-eye text-[10px]" id="eye-icon"></i>
+                            <span id="eye-text">Hide</span>
+                        </button>
+                    </div>
+
+                    <!-- Balance Summary -->
+                    <div class="mb-4">
+                        <p class="text-xs text-slate-300 font-medium">Total Portfolio Value</p>
+                        <div class="flex items-baseline space-x-2 mt-0.5">
+                            <span class="text-2xl font-black tracking-tight" id="total-balance-display">₹ 4,85,250<span class="text-sm font-normal text-slate-300">.00</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Mini Breakdown Stats Cards -->
+                    <div class="grid grid-cols-2 gap-3 mt-2">
+                        <div class="bg-white/10 backdrop-blur-md rounded-xl p-2.5 border border-white/10">
+                            <div class="flex items-center justify-between text-slate-300 text-[11px]">
+                                <span>Fixed Deposits (3)</span>
+                                <i class="fa-solid fa-[#E35316] fa-vault text-orange-300"></i>
+                            </div>
+                            <p class="text-sm font-bold text-white mt-1" id="fd-total-val">₹ 4,25,000</p>
+                            <p class="text-[10px] text-emerald-300 mt-0.5 font-medium">Avg Return: 8.00%</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-md rounded-xl p-2.5 border border-white/10">
+                            <div class="flex items-center justify-between text-slate-300 text-[11px]">
+                                <span>Recurring FDs (2)</span>
+                                <i class="fa-solid fa-arrows-rotate text-amber-300"></i>
+                            </div>
+                            <p class="text-sm font-bold text-white mt-1" id="rd-total-val">₹ 60,250</p>
+                            <p class="text-[10px] text-amber-300 mt-0.5 font-medium">Next SIP: 15 Nov</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Quick Actions Row -->
+                <div class="px-4 -mt-9 mb-4 relative z-20">
+                    <div class="bg-white rounded-2xl shadow-xl p-3 grid grid-cols-4 gap-2 border border-slate-100 text-center">
+                        <button onclick="switchTab('calculator'); showToast('FD Calculator Activated');" class="flex flex-col items-center group">
+                            <div class="w-11 h-11 rounded-xl bg-orange-50 text-au-orange flex items-center justify-center text-lg mb-1 group-active:scale-95 transition-transform shadow-sm">
+                                <i class="fa-solid fa-plus-circle"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold text-slate-700 leading-tight">Open FD</span>
+                            <span class="text-[9px] text-emerald-600 font-bold">Up to 8.50%</span>
+                        </button>
+                        <button onclick="openNewRDModal()" class="flex flex-col items-center group">
+                            <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg mb-1 group-active:scale-95 transition-transform shadow-sm">
+                                <i class="fa-solid fa-[#E35316] fa-piggy-bank"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold text-slate-700 leading-tight">Open RD</span>
+                            <span class="text-[9px] text-slate-400 font-medium">From ₹500/mo</span>
+                        </button>
+                        <button onclick="openTaxSaverInfo()" class="flex flex-col items-center group">
+                            <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center text-lg mb-1 group-active:scale-95 transition-transform shadow-sm">
+                                <i class="fa-solid fa-[#E35316] fa-percent"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold text-slate-700 leading-tight">Tax Saver</span>
+                            <span class="text-[9px] text-purple-600 font-medium">Sec 80C</span>
+                        </button>
+                        <button onclick="toggleSweepInModal()" class="flex flex-col items-center group">
+                            <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg mb-1 group-active:scale-95 transition-transform shadow-sm">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <span class="text-[11px] font-semibold text-slate-700 leading-tight">Sweep-In</span>
+                            <span class="text-[9px] text-blue-600 font-medium">Auto FD</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs Section -->
+                <div class="px-4 mb-3">
+                    <div class="flex bg-slate-200/70 p-1 rounded-xl text-xs font-semibold text-slate-600 space-x-1">
+                        <button id="tab-active-btn" onclick="switchTab('active')" class="flex-1 py-2 rounded-lg bg-white text-au-orange shadow-sm text-center transition-all">
+                            Active Deposits
+                        </button>
+                        <button id="tab-calculator-btn" onclick="switchTab('calculator')" class="flex-1 py-2 rounded-lg text-center hover:text-slate-900 transition-all">
+                            FD Calculator
+                        </button>
+                        <button id="tab-rates-btn" onclick="switchTab('rates')" class="flex-1 py-2 rounded-lg text-center hover:text-slate-900 transition-all">
+                            Rates Slab
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 1: Active Deposits View -->
+                <div id="tab-active" class="px-4 space-y-3">
+                    <div class="flex justify-between items-center text-xs text-slate-500 font-medium px-1">
+                        <span>YOUR ACTIVE ACCOUNTS (3)</span>
+                        <span class="text-au-orange cursor-pointer hover:underline" onclick="showToast('Sorting applied')">Sort by Tenure <i class="fa-solid fa-arrow-down-short-wide"></i></span>
+                    </div>
+
+                    <!-- Deposit Card 1: Fixed Deposit -->
+                    <div onclick="openDepositDetails('AUFD987421', 'Regular Fixed Deposit', '₹ 2,50,000', '8.00% p.a.', '18 Months', '24 Oct 2025', '₹ 32,450', 'Quarterly Payout', 'Ramesh Kumar (Father)')" class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition cursor-pointer relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-orange-100/70 to-transparent rounded-bl-full -z-0"></div>
+                        <div class="flex justify-between items-start mb-2 relative z-10">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-8 h-8 rounded-lg bg-orange-100 text-au-orange flex items-center justify-center font-bold text-xs">
+                                    FD
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-900">Regular Fixed Deposit</h4>
+                                    <p class="text-[10px] text-slate-400 font-mono">A/C: AUFD987421</p>
+                                </div>
+                            </div>
+                            <span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-200">ACTIVE</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 my-2 py-2 border-y border-slate-100 text-xs">
+                            <div>
+                                <p class="text-[10px] text-slate-400">Principal Amount</p>
+                                <p class="font-bold text-slate-800">₹ 2,50,000</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] text-slate-400">Interest Rate</p>
+                                <p class="font-bold text-au-orange">8.00% p.a.</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center text-[11px] text-slate-500 pt-1">
+                            <span>Matures: <strong class="text-slate-700">24 Oct 2025</strong></span>
+                            <span class="text-slate-400 text-[10px] group-hover:text-au-orange transition">Tap for details <i class="fa-solid fa-chevron-right text-[9px]"></i></span>
+                        </div>
+                    </div>
+
+                    <!-- Deposit Card 2: Senior Citizen FD -->
+                    <div onclick="openDepositDetails('AUFD654129', 'Royale Senior Citizen FD', '₹ 1,75,000', '8.50% p.a.', '36 Months', '12 Jan 2027', '₹ 47,800', 'At Maturity', 'Sunita Kumar (Mother)')" class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition cursor-pointer relative overflow-hidden group">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">
+                                    SR
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-900">Senior Citizen FD</h4>
+                                    <p class="text-[10px] text-slate-400 font-mono">A/C: AUFD654129</p>
+                                </div>
+                            </div>
+                            <span class="bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-200">+0.5% BONUS</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 my-2 py-2 border-y border-slate-100 text-xs">
+                            <div>
+                                <p class="text-[10px] text-slate-400">Principal Amount</p>
+                                <p class="font-bold text-slate-800">₹ 1,75,000</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] text-slate-400">Interest Rate</p>
+                                <p class="font-bold text-au-orange">8.50% p.a.</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center text-[11px] text-slate-500 pt-1">
+                            <span>Matures: <strong class="text-slate-700">12 Jan 2027</strong></span>
+                            <span class="text-slate-400 text-[10px] group-hover:text-au-orange transition">Tap for details <i class="fa-solid fa-chevron-right text-[9px]"></i></span>
+                        </div>
+                    </div>
+
+                    <!-- Deposit Card 3: Recurring Deposit -->
+                    <div onclick="openDepositDetails('AURD112233', 'Monthly Recurring Deposit', '₹ 60,250', '7.75% p.a.', '12 Months', '15 Aug 2025', '₹ 3,420', 'Monthly SIP ₹5,000', 'Self')" class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm hover:shadow-md transition cursor-pointer relative group">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs">
+                                    RD
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-900">Recurring Deposit (RD)</h4>
+                                    <p class="text-[10px] text-slate-400 font-mono">A/C: AURD112233</p>
+                                </div>
+                            </div>
+                            <span class="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200">AUTO-DEBIT</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 my-2 py-2 border-y border-slate-100 text-xs">
+                            <div>
+                                <p class="text-[10px] text-slate-400">Current Accumulated</p>
+                                <p class="font-bold text-slate-800">₹ 60,250</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] text-slate-400">Monthly Contribution</p>
+                                <p class="font-bold text-purple-700">₹ 5,000 / mo</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center text-[11px] text-slate-500 pt-1">
+                            <span>Next Installment: <strong class="text-slate-700">15 Nov 2024</strong></span>
+                            <span class="text-slate-400 text-[10px] group-hover:text-au-orange transition">Tap for details <i class="fa-solid fa-chevron-right text-[9px]"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: FD Calculator (Interactive Widget) -->
+                <div id="tab-calculator" class="px-4 space-y-4 hidden">
+                    <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                            <div>
+                                <h3 class="text-xs font-bold text-slate-800">FD Return Calculator</h3>
+                                <p class="text-[10px] text-slate-400">Calculate high returns on AU Bank FDs</p>
+                            </div>
+                            <!-- Senior Citizen Switch -->
+                            <label class="flex items-center space-x-2 cursor-pointer bg-orange-50 px-2 py-1 rounded-lg border border-orange-200">
+                                <span class="text-[10px] font-bold text-au-orange">Senior (+0.5%)</span>
+                                <input type="checkbox" id="senior-toggle" class="sr-only peer" onchange="calculateFD()">
+                                <div class="w-7 h-4 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-au-orange relative"></div>
+                            </label>
+                        </div>
+
+                        <!-- Investment Amount Slider -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-500">Deposit Amount</span>
+                                <span class="font-bold text-au-orange text-sm" id="calc-amount-val">₹ 1,00,000</span>
+                            </div>
+                            <input type="range" id="calc-amount" min="10000" max="1000000" step="10000" value="100000" oninput="calculateFD()">
+                            <div class="flex justify-between text-[9px] text-slate-400">
+                                <span>₹10,000</span>
+                                <span>₹5,00,000</span>
+                                <span>₹10,00,000</span>
+                            </div>
+                        </div>
+
+                        <!-- Tenure Slider -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-500">Tenure (Months)</span>
+                                <span class="font-bold text-au-orange text-sm" id="calc-tenure-val">24 Months (2 Yrs)</span>
+                            </div>
+                            <input type="range" id="calc-tenure" min="6" max="60" step="3" value="24" oninput="calculateFD()">
+                            <div class="flex justify-between text-[9px] text-slate-400">
+                                <span>6 Mo</span>
+                                <span>24 Mo</span>
+                                <span>60 Mo</span>
+                            </div>
+                        </div>
+
+                        <!-- Real-time Results Card -->
+                        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/60 space-y-2">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-500">Applicable Interest Rate</span>
+                                <span class="font-extrabold text-emerald-600 bg-emerald-100/70 px-2 py-0.5 rounded text-xs" id="calc-rate-val">8.00% p.a.</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-500">Total Interest Earned</span>
+                                <span class="font-bold text-slate-800" id="calc-interest-val">₹ 17,280</span>
+                            </div>
+                            <div class="pt-2 border-t border-slate-200 flex justify-between items-center">
+                                <span class="text-xs font-bold text-slate-700">Maturity Amount</span>
+                                <span class="text-base font-black text-au-orange" id="calc-maturity-val">₹ 1,17,280</span>
+                            </div>
+                        </div>
+
+                        <!-- Chart Visual Representation -->
+                        <div class="relative h-32 w-full flex items-center justify-center">
+                            <canvas id="fdChart"></canvas>
+                        </div>
+
+                        <!-- Book FD Button -->
+                        <button onclick="showToast('Proceeding to Instant FD Creation')" class="w-full au-gradient-card text-white py-3 rounded-xl font-bold text-xs shadow-lg hover:opacity-95 transition flex items-center justify-center space-x-2">
+                            <span>Proceed to Book FD Instant</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 3: Interest Rates Table -->
+                <div id="tab-rates" class="px-4 space-y-3 hidden">
+                    <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm space-y-3">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-xs font-bold text-slate-800">FD Interest Rate Slabs</h3>
+                                <p class="text-[10px] text-slate-400">Effective from 2026 (Domestic &lt; ₹3 Cr)</p>
+                            </div>
+                            <span class="bg-orange-100 text-au-orange text-[9px] font-bold px-2 py-0.5 rounded-full">LATEST RATES</span>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-600 text-[10px] uppercase font-bold">
+                                        <th class="p-2 rounded-l-lg">Tenure</th>
+                                        <th class="p-2">General</th>
+                                        <th class="p-2 rounded-r-lg text-au-orange">Senior Citizen</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-[11px]">
+                                    <tr>
+                                        <td class="p-2 font-medium">7 days to 45 days</td>
+                                        <td class="p-2">3.75%</td>
+                                        <td class="p-2 font-bold text-au-orange">4.25%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 font-medium">46 days to 90 days</td>
+                                        <td class="p-2">4.75%</td>
+                                        <td class="p-2 font-bold text-au-orange">5.25%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 font-medium">91 days to 6 months</td>
+                                        <td class="p-2">5.50%</td>
+                                        <td class="p-2 font-bold text-au-orange">6.00%</td>
+                                    </tr>
+                                    <tr class="bg-orange-50/50">
+                                        <td class="p-2 font-bold text-slate-800">12 Months to 15 Months</td>
+                                        <td class="p-2 font-bold">7.75%</td>
+                                        <td class="p-2 font-extrabold text-au-orange">8.25%</td>
+                                    </tr>
+                                    <tr class="bg-orange-100/50 border-l-2 border-au-orange">
+                                        <td class="p-2 font-bold text-slate-900">18 Months (Special Rate) ⭐</td>
+                                        <td class="p-2 font-bold text-emerald-700">8.00%</td>
+                                        <td class="p-2 font-black text-au-orange">8.50%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 font-medium">24 Months to 36 Months</td>
+                                        <td class="p-2">7.50%</td>
+                                        <td class="p-2 font-bold text-au-orange">8.00%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 font-medium">5 Years Tax Saver FD</td>
+                                        <td class="p-2">7.20%</td>
+                                        <td class="p-2 font-bold text-au-orange">7.70%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="bg-amber-50 rounded-xl p-2.5 border border-amber-200 text-[10px] text-amber-900 flex items-start space-x-2">
+                            <i class="fa-solid fa-circle-info text-amber-600 mt-0.5 text-xs"></i>
+                            <span>Senior citizens receive an additional interest rate benefit of 0.50% p.a. across all deposit tenures.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Services & Tax Tools Row -->
+                <div class="px-4 mt-4 mb-3">
+                    <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide mb-2 px-1">Deposit Services & Downloads</h3>
+                    <div class="space-y-2">
+                        <!-- Tool 1: Form 15G/15H -->
+                        <div onclick="showToast('Form 15G/15H Status: Submitted & Verified')" class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between cursor-pointer hover:bg-slate-50 transition">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold">
+                                    <i class="fa-solid fa-file-shield"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Form 15G / 15H Tax Exemption</h4>
+                                    <p class="text-[10px] text-slate-400">AY 2026-27 Active Status</p>
+                                </div>
+                            </div>
+                            <span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">ACTIVE</span>
+                        </div>
+
+                        <!-- Tool 2: Interest Certificate -->
+                        <div onclick="showToast('Downloading Interest Certificate PDF...')" class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between cursor-pointer hover:bg-slate-50 transition">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-bold">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Interest Certificate</h4>
+                                    <p class="text-[10px] text-slate-400">Download for Income Tax filing</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-download text-slate-400 text-xs"></i>
+                        </div>
+
+                        <!-- Tool 3: Sweep-in Auto Renewal -->
+                        <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-sm font-bold">
+                                    <i class="fa-solid fa-[#E35316] fa-repeat"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800">Auto-Renewal Instructions</h4>
+                                    <p class="text-[10px] text-slate-400">Renew Principal & Interest on maturity</p>
+                                </div>
+                            </div>
+                            <!-- Switch Toggle -->
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer" onchange="showToast('Auto-renewal preference updated')">
+                                <div class="w-8 h-4 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-au-orange"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AU Promo Banner -->
+                <div class="px-4 my-3">
+                    <div class="au-gradient-dark rounded-2xl p-4 text-white relative overflow-hidden shadow-md">
+                        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full blur-xl"></div>
+                        <span class="bg-amber-400 text-slate-950 font-extrabold text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider">EXCLUSIVE OFFER</span>
+                        <h4 class="text-sm font-bold mt-1">Earn 8.50% p.a. on 18-Month FD</h4>
+                        <p class="text-[10px] text-slate-300 mt-0.5">Maximize your savings with monthly interest payout option.</p>
+                        <button onclick="switchTab('calculator')" class="mt-3 bg-white text-au-purpleDark font-bold text-[11px] px-3 py-1.5 rounded-lg shadow hover:bg-slate-100 transition">
+                            Calculate Returns <i class="fa-solid fa-chevron-right text-[9px] ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Sheet Modal Container (For Deposit Details) -->
+            <div id="deposit-modal" class="absolute inset-0 bg-black/60 z-50 flex flex-col justify-end transition-opacity duration-300 opacity-0 pointer-events-none">
+                <div class="bg-white rounded-t-3xl p-5 space-y-4 max-h-[85%] overflow-y-auto transform transition-transform duration-300 translate-y-full" id="modal-content">
+                    <div class="w-12 h-1 bg-slate-300 rounded-full mx-auto mb-2"></div>
+                    
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-bold text-au-orange bg-orange-50 px-2 py-0.5 rounded-full" id="modal-type-badge">FD ACCOUNT</span>
+                            <h3 class="text-base font-bold text-slate-900 mt-1" id="modal-title">Fixed Deposit Details</h3>
+                            <p class="text-xs text-slate-400 font-mono" id="modal-acc-no">A/C: AUFD987421</p>
+                        </div>
+                        <button onclick="closeDepositDetails()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200">
+                            <i class="fa-solid fa-xmark text-sm"></i>
+                        </button>
+                    </div>
+
+                    <!-- Modal Details Grid -->
+                    <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-100 grid grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <p class="text-[10px] text-slate-400">Principal Deposit</p>
+                            <p class="font-bold text-slate-900 text-sm" id="modal-principal">₹ 2,50,000</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-slate-400">Interest Rate</p>
+                            <p class="font-bold text-emerald-600 text-sm" id="modal-rate">8.00% p.a.</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-slate-400">Tenure</p>
+                            <p class="font-semibold text-slate-700" id="modal-tenure">18 Months</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-slate-400">Maturity Date</p>
+                            <p class="font-semibold text-slate-700" id="modal-maturity">24 Oct 2025</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-slate-400">Total Estimated Interest</p>
+                            <p class="font-semibold text-au-orange" id="modal-interest">₹ 32,450</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-slate-400">Interest Payout</p>
+                            <p class="font-semibold text-slate-700" id="modal-payout">Quarterly</p>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-3 space-y-2 text-xs">
+                        <div class="flex justify-between text-slate-600">
+                            <span>Nominee Registered:</span>
+                            <span class="font-semibold text-slate-800" id="modal-nominee">Ramesh Kumar</span>
+                        </div>
+                        <div class="flex justify-between text-slate-600">
+                            <span>Auto-Renewal Status:</span>
+                            <span class="font-semibold text-emerald-600">Enabled (Principal + Interest)</span>
+                        </div>
+                    </div>
+
+                    <!-- Actions Bottom Sheet -->
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <button onclick="showToast('Premature Withdrawal Simulator Opened'); closeDepositDetails();" class="py-2.5 rounded-xl border border-rose-200 bg-rose-50 text-rose-700 font-bold text-xs hover:bg-rose-100 transition">
+                            Premature Close / Break
+                        </button>
+                        <button onclick="showToast('Advice Statement Sent to Registered Email'); closeDepositDetails();" class="py-2.5 rounded-xl au-gradient-card text-white font-bold text-xs shadow hover:opacity-95 transition">
+                            Download FD Advice
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toast Notification Box -->
+            <div id="toast" class="absolute top-16 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-4 py-2 rounded-full shadow-xl z-50 opacity-0 pointer-events-none transition-all duration-300 border border-slate-700 flex items-center space-x-2">
+                <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                <span id="toast-message">Notification message</span>
+            </div>
+
+            <!-- Android Bottom Navigation Bar -->
+            <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-3 py-2 flex justify-around items-center z-40">
+                <button onclick="showToast('Home Dashboard Navigation')" class="flex flex-col items-center text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-house text-base"></i>
+                    <span class="text-[10px] mt-0.5 font-medium">Home</span>
+                </button>
+                <button class="flex flex-col items-center text-au-orange font-bold">
+                    <div class="relative">
+                        <i class="fa-solid fa-[#E35316] fa-vault text-lg"></i>
+                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-au-orange rounded-full"></span>
+                    </div>
+                    <span class="text-[10px] mt-0.5">Deposits</span>
+                </button>
+                <button onclick="showToast('Money Transfer Module')" class="flex flex-col items-center text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-arrow-right-arrow-left text-base"></i>
+                    <span class="text-[10px] mt-0.5 font-medium">Transfers</span>
+                </button>
+                <button onclick="showToast('Mutual Funds & Wealth Module')" class="flex flex-col items-center text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-chart-line text-base"></i>
+                    <span class="text-[10px] mt-0.5 font-medium">Invest</span>
+                </button>
+                <button onclick="showToast('More Banking Services')" class="flex flex-col items-center text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-grid-2 text-base"></i>
+                    <span class="text-[10px] mt-0.5 font-medium">Services</span>
+                </button>
+            </div>
+
+            <!-- Android Bottom Gesture Bar -->
+            <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-32 h-1 bg-slate-300 rounded-full z-50"></div>
+
+        </div>
+    </div>
+
+    <!-- Interactive JavaScript Logic -->
+    <script>
+        // Real-time Clock for Android Status Bar
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('current-time').innerText = `${hours}:${minutes}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Toggle Total Balance Visibility
+        let isBalanceVisible = true;
+        document.getElementById('toggle-balance').addEventListener('click', function() {
+            isBalanceVisible = !isBalanceVisible;
+            const balanceDisplay = document.getElementById('total-balance-display');
+            const fdDisplay = document.getElementById('fd-total-val');
+            const rdDisplay = document.getElementById('rd-total-val');
+            const eyeIcon = document.getElementById('eye-icon');
+            const eyeText = document.getElementById('eye-text');
+
+            if (isBalanceVisible) {
+                balanceDisplay.innerHTML = '₹ 4,85,250<span class="text-sm font-normal text-slate-300">.00</span>';
+                fdDisplay.innerText = '₹ 4,25,000';
+                rdDisplay.innerText = '₹ 60,250';
+                eyeIcon.className = 'fa-solid fa-eye text-[10px]';
+                eyeText.innerText = 'Hide';
+            } else {
+                balanceDisplay.innerHTML = '₹ ••••••••';
+                fdDisplay.innerText = '₹ •••••••';
+                rdDisplay.innerText = '₹ •••••••';
+                eyeIcon.className = 'fa-solid fa-eye-slash text-[10px]';
+                eyeText.innerText = 'Show';
+            }
+        });
+
+        // Tab Switching Logic
+        function switchTab(tabName) {
+            const tabs = ['active', 'calculator', 'rates'];
+            tabs.forEach(tab => {
+                const content = document.getElementById(`tab-${tab}`);
+                const btn = document.getElementById(`tab-${tab}-btn`);
+                if (tab === tabName) {
+                    content.classList.remove('hidden');
+                    btn.classList.add('bg-white', 'text-au-orange', 'shadow-sm');
+                    btn.classList.remove('hover:text-slate-900');
+                } else {
+                    content.classList.add('hidden');
+                    btn.classList.remove('bg-white', 'text-au-orange', 'shadow-sm');
+                    btn.classList.add('hover:text-slate-900');
+                }
+            });
+
+            if (tabName === 'calculator') {
+                calculateFD();
+            }
+        }
+
+        // FD Calculator Chart.js Initialization
+        let fdChart = null;
+
+        function initChart(principal, interest) {
+            const ctx = document.getElementById('fdChart').getContext('2d');
+            if (fdChart) {
+                fdChart.destroy();
+            }
+            fdChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Principal Amount', 'Interest Earned'],
+                    datasets: [{
+                        data: [principal, interest],
+                        backgroundColor: ['#E2E8F0', '#E35316'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: { size: 10, family: 'Inter' },
+                                boxWidth: 10
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        // Calculate FD Interest Dynamically
+        function calculateFD() {
+            const amount = parseFloat(document.getElementById('calc-amount').value);
+            const tenureMonths = parseInt(document.getElementById('calc-tenure').value);
+            const isSenior = document.getElementById('senior-toggle').checked;
+
+            // Determine Base Rate based on tenure
+            let baseRate = 7.50;
+            if (tenureMonths <= 12) baseRate = 7.00;
+            else if (tenureMonths === 18) baseRate = 8.00; // Special Rate
+            else if (tenureMonths > 18 && tenureMonths <= 36) baseRate = 7.75;
+            else if (tenureMonths > 36) baseRate = 7.25;
+
+            if (isSenior) {
+                baseRate += 0.50;
+            }
+
+            // Simple Compounding Interest estimation for demo
+            const years = tenureMonths / 12;
+            const interest = Math.round(amount * Math.pow((1 + (baseRate / 100) / 4), (4 * years)) - amount);
+            const maturity = amount + interest;
+
+            // Update UI
+            document.getElementById('calc-amount-val').innerText = `₹ ${amount.toLocaleString('en-IN')}`;
+            document.getElementById('calc-tenure-val').innerText = `${tenureMonths} Months (${(tenureMonths/12).toFixed(1)} Yrs)`;
+            document.getElementById('calc-rate-val').innerText = `${baseRate.toFixed(2)}% p.a.`;
+            document.getElementById('calc-interest-val').innerText = `₹ ${interest.toLocaleString('en-IN')}`;
+            document.getElementById('calc-maturity-val').innerText = `₹ ${maturity.toLocaleString('en-IN')}`;
+
+            initChart(amount, interest);
+        }
+
+        // Open Deposit Detail Modal Sheet
+        function openDepositDetails(accNo, title, principal, rate, tenure, maturity, interest, payout, nominee) {
+            document.getElementById('modal-acc-no').innerText = `A/C: ${accNo}`;
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-principal').innerText = principal;
+            document.getElementById('modal-rate').innerText = rate;
+            document.getElementById('modal-tenure').innerText = tenure;
+            document.getElementById('modal-maturity').innerText = maturity;
+            document.getElementById('modal-interest').innerText = interest;
+            document.getElementById('modal-payout').innerText = payout;
+            document.getElementById('modal-nominee').innerText = nominee;
+
+            const modal = document.getElementById('deposit-modal');
+            const modalContent = document.getElementById('modal-content');
+            
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('translate-y-full');
+        }
+
+        // Close Deposit Details Sheet
+        function closeDepositDetails() {
+            const modal = document.getElementById('deposit-modal');
+            const modalContent = document.getElementById('modal-content');
+
+            modalContent.classList.add('translate-y-full');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        // Toast Notification System
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+            
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+
+        function openNewRDModal() {
+            showToast('Opening Recurring Deposit Application Form');
+        }
+
+        function openTaxSaverInfo() {
+            showToast('5-Year Tax Saver FD Section 80C Selected');
+        }
+
+        function toggleSweepInModal() {
+            showToast('AU Sweep-In Facility: Auto-linked to Savings Account');
+        }
+
+        // Initialize Calculator on load
+        window.onload = function() {
+            calculateFD();
+        }
+    </script>
+</body>
+</html>

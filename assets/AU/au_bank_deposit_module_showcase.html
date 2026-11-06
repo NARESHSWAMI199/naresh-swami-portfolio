@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AU Small Finance Bank - Deposit Module</title>
+    <title>AU0101 Deposit Module - Backend Contribution</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -103,40 +103,45 @@
         }
     </style>
 </head>
-<body class="bg-slate-900 min-h-screen flex items-center justify-center p-0 sm:p-4 md:p-8 font-sans antialiased text-slate-800">
+<body class="min-h-screen flex items-center justify-center p-0 sm:p-4 md:p-8 font-sans antialiased text-slate-100" style="background:#0b1020">
 
     <!-- Outer Presentation Container -->
     <div class="w-full max-w-5xl flex flex-col lg:flex-row items-center justify-center gap-8">
+
+        <div class="lg:hidden w-full rounded-xl border border-cyan-300/20 bg-slate-900 px-4 py-3 text-xs leading-relaxed text-slate-300 shadow-lg">
+            <strong class="text-cyan-300">My contribution: Java backend development.</strong>
+            This interactive UI is illustrative; customer details, rates and balances are fictional demo data, not production information.
+        </div>
         
         <!-- Showcase Info Side Panel (Visible on desktop) -->
-        <div class="hidden lg:flex flex-col text-white max-w-md space-y-6 p-4">
-            <div class="inline-flex items-center space-x-2 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-full text-xs text-orange-400 font-medium">
+        <div class="hidden lg:flex flex-col text-slate-100 max-w-md space-y-6 p-4">
+            <div class="inline-flex items-center space-x-2 bg-slate-900 border border-cyan-300/20 px-3 py-1.5 rounded-full text-xs text-cyan-300 font-medium">
                 <span class="flex h-2 w-2 rounded-full bg-orange-500 animate-ping"></span>
-                <span>AU 0101 Mobile Banking UI Showcase</span>
+                <span>AU0101 DEPOSIT MODULE · BACKEND CASE STUDY</span>
             </div>
             <div>
-                <h1 class="text-3xl font-extrabold text-white tracking-tight">Deposit Module Portfolio</h1>
+                <h1 class="text-3xl font-extrabold text-white tracking-tight">Deposit Module Backend</h1>
                 <p class="text-slate-400 mt-2 text-sm leading-relaxed">
-                    Interactive prototype for AU Small Finance Bank's digital deposit portfolio management system. Includes real-time calculator, active deposit management, rates slab dynamic view, and quick digital services.
+                    My contribution focused on backend functionality, transaction-oriented workflows and REST APIs using Spring Boot. The mobile UI below is an illustrative prototype, not a claim of frontend implementation or production data.
                 </p>
             </div>
             
             <div class="space-y-3 pt-2 text-xs text-slate-300">
-                <div class="flex items-center gap-3 bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                <div class="flex items-center gap-3 bg-slate-900 p-3 rounded-xl border border-slate-700/70 shadow-sm">
                     <i class="fa-solid fa-calculator text-orange-400 text-lg"></i>
                     <div>
                         <p class="font-semibold text-white">Interactive FD Calculator</p>
                         <p class="text-slate-400">Real-time interest computation with Chart.js visualization.</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3 bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                <div class="flex items-center gap-3 bg-slate-900 p-3 rounded-xl border border-slate-700/70 shadow-sm">
                     <i class="fa-solid fa-layer-group text-orange-400 text-lg"></i>
                     <div>
                         <p class="font-semibold text-white">Portfolio Breakdown & Bottom Sheets</p>
                         <p class="text-slate-400">Detailed active FD/RD management and premature options.</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3 bg-slate-800/60 p-3 rounded-xl border border-slate-700/50">
+                <div class="flex items-center gap-3 bg-slate-900 p-3 rounded-xl border border-slate-700/70 shadow-sm">
                     <i class="fa-solid fa-[#E35316] fa-mobile-screen text-orange-400 text-lg"></i>
                     <div>
                         <p class="font-semibold text-white">Android Material 3 Specs</p>
@@ -146,7 +151,7 @@
             </div>
 
             <!-- View Switch Controls for Demo -->
-            <div class="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+            <div class="pt-4 border-t border-slate-700 flex items-center justify-between text-xs text-slate-400">
                 <span>Designed for Mobile Screen Resolution</span>
                 <span class="text-orange-400 font-semibold">AU 0101 Redesign</span>
             </div>

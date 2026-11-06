@@ -5,10 +5,10 @@
       "id": "au0101-deposit",
       "name": "AU0101 - Core Banking Deposit Module",
       "company": "AU Small Finance Bank",
-      "role": "Software Developer",
+      "role": "Java Backend Developer",
       "duration": "Sep 2025 - Oct 2026",
       "category": "Banking & Financial Technology",
-      "projectType": "Own end to end development of Deposit Module",
+      "projectType": "Backend development for Deposit Module",
       "description": "Worked on the Deposit Module of AU0101, a core banking platform, contributing to backend services and transaction-oriented application workflows.",
       "showcase": "./assets/AU/au_bank_deposit_module_showcase.html",
       "responsibilities": [
@@ -27,8 +27,7 @@
         "Kafka",
         "Redis",
         "MySQL",
-        "PostgreSQL",
-        "React Native"
+        "PostgreSQL"
       ]
     },
     {
@@ -40,10 +39,7 @@
       "category": "Enterprise Application",
       "projectType": "Major Development & Implementation",
       "description": "An enterprise application focused on packing workflows and large-scale Excel/PDF document generation with batch processing.",
-      "images" : [
-        "./assets/QP/1.png",
-        "./assets/QP/2.png"
-      ],
+      "showcase": "./assets/qp-packing-backend-showcase.html",
       "responsibilities": [
         "Developed backend modules using Spring Boot.",
         "Implemented batch processing using Spring Batch.",
@@ -104,6 +100,7 @@
       "category": "Email & Domain Management",
       "projectType": "Existing Product Enhancement",
       "description": "An email-domain management module developed using Java web technologies and Hibernate.",
+      "showcase" : "./assets/GODIL/godil.html",
       "responsibilities": [
         "Developed and maintained web application features.",
         "Worked with JSP and Servlets.",
@@ -120,13 +117,14 @@
     },
     {
       "id": "sportasy-snopii",
-      "name": "Sportasy / Snopii Admin Platform",
+      "name": "Sportsy / Snopii Admin Platform",
       "company": "Synarion IT Solution Pvt. Ltd.",
-      "role": "Full Stack Developer",
+      "role": "Java Backend Developer",
       "duration": "Jul 2022 - Jun 2023",
       "category": "Admin & Management Platform",
       "projectType": "Backend Development & Integration",
-      "description": "An admin management platform with backend APIs, authentication, authorization and payment gateway integrations.",
+      "description": "Backend development for the Sportsy / Snopii platform, including REST APIs, authentication, authorization and payment gateway integrations.",
+      "showcase" : "./assets/SPORTSY/showcase.html",
       "responsibilities": [
         "Developed REST APIs using Spring Boot.",
         "Implemented JWT-based authentication.",
@@ -157,6 +155,7 @@
       "category": "Wallet & Recharge Platform",
       "projectType": "Backend Development & Platform Integration & Deployment",
       "description": "A recharge platform involving backend API development, encryption and integration of application functionality with web-based services.",
+      "showcase": "./assets/go4wallet-backend-showcase.html",
       "responsibilities": [
         "Developed REST APIs using Spring Boot.",
         "Worked on recharge-related backend workflows.",
@@ -183,6 +182,7 @@
       "category": "Human Resource Management",
       "projectType": "Existing Application Development",
       "description": "An online Human Resource Management System developed using Java and Spring technologies.",
+      "showcase": "./assets/hrms-backend-showcase.html",
       "responsibilities": [
         "Developed and maintained HRMS application modules.",
         "Implemented backend functionality using Spring MVC and Spring Boot.",
@@ -207,6 +207,7 @@
       "category": "Financial Reporting",
       "projectType": "Fully owned development of investment monitoring and reporting application",
       "description": "An investment monitoring and reporting application covering SLR and Non-SLR investment-related information.",
+      "showcase": "./assets/investment-monitoring-backend-showcase.html",
       "responsibilities": [
         "Worked on investment monitoring application functionality.",
         "Contributed to SLR and Non-SLR reporting features.",
@@ -226,11 +227,11 @@
     {
       "id": "impact-01",
       "title": "Core Banking Development",
-      "workedAs": "Software Developer",
+      "workedAs": "Java Backend Developer",
       "category": "Banking Domain",
       "company": "AU Small Finance Bank | Jaipur",
       "timeframe": "Sep 2025 – Oct 2026",
-      "description": "Worked on the AU0101 Core Banking System, contributing to the Deposit Module using Java, Spring Boot and Hibernate. Involved in backend API development, high-volume transaction processing, database operations and integrations with Kafka and Redis.",
+      "description": "Worked on the AU0101 Core Banking System Deposit Module using Java, Spring Boot and Hibernate, contributing to backend API development, transaction-oriented workflows, database operations and integrations with Kafka and Redis.",
       "technologies": [
         "Java",
         "Spring Boot",
@@ -263,11 +264,11 @@
     {
       "id": "impact-03",
       "title": "Secure Backend API Development",
-      "workedAs": "Full Stack Developer",
+      "workedAs": "Java Backend Developer",
       "category": "Security & Authorization",
       "company": "Synarion IT Solution Pvt. Ltd. | Jaipur",
       "timeframe": "Jul 2022 – Jun 2023",
-      "description": "Developed backend APIs using Spring Boot and implemented JWT-based authentication, role-based access control, permission management and AES encryption to support secure application workflows.",
+      "description": "Developed backend APIs using Spring Boot and implemented JWT-based authentication, role-based access control, payment gateway integrations and AES encryption to support secure application workflows.",
       "technologies": [
         "Java",
         "Spring Boot",
@@ -306,4 +307,3 @@
     }
   ]
 }
-

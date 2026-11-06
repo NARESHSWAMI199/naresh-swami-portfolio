@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportsy - Backend Contribution Showcase</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        sportsy: {
+                            bg: '#0b1020',
+                            card: '#111a2e',
+                            border: '#26344c',
+                            primary: '#10b981',
+                            primaryHover: '#059669',
+                            lime: '#84cc16',
+                            accent: '#06b6d4',
+                            darkText: '#9ba8bf'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(9, 13, 22, 0.4);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(16, 185, 129, 0.3);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(16, 185, 129, 0.6);
+        }
+        .glow-emerald {
+            box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.3);
+        }
+        .phone-frame {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 12px #1e293b;
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-950 text-slate-100 font-sans antialiased overflow-hidden select-none">
+
+    <!-- GLOBAL APPS SHELL -->
+    <div class="flex flex-col h-screen w-screen overflow-hidden bg-sportsy-bg">
+        
+        <!-- TOP VIEW MODE SWITCHER BAR -->
+        <header class="h-14 bg-slate-900 border-b border-slate-800 px-6 flex items-center justify-between shrink-0 z-40">
+            <!-- Brand -->
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-500 to-lime-400 flex items-center justify-center font-black text-slate-950 text-lg shadow-lg glow-emerald">
+                    <i class="fa-solid fa-futbol text-sm"></i>
+                </div>
+                <span class="font-black text-lg tracking-tight text-white">sportsy<span class="text-emerald-400">.app</span></span>
+                <span class="hidden sm:inline-block text-[10px] bg-emerald-950 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-800">TURF & MATCHMAKING</span>
+            </div>
+
+            <!-- Viewport Switcher Buttons -->
+            <div class="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 space-x-1">
+                <button onclick="setViewMode('desktop')" id="view-btn-desktop" class="flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 shadow transition">
+                    <i class="fa-solid fa-desktop"></i>
+                    <span class="hidden sm:inline">Desktop Web App</span>
+                </button>
+                <button onclick="setViewMode('mobile')" id="view-btn-mobile" class="flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span class="hidden sm:inline">Android Mobile View</span>
+                </button>
+            </div>
+
+            <!-- Quick Action -->
+            <div class="flex items-center space-x-3">
+                <button onclick="openBookingModal('Global Quick Booking', 1500)" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-xl shadow transition">
+                    + Quick Slot Book
+                </button>
+            </div>
+        </header>
+
+        <aside class="shrink-0 border-b border-cyan-300/20 bg-slate-900 px-4 py-2 text-center text-xs leading-relaxed text-slate-300">
+            <strong>My contribution: backend development only</strong>
+            — Spring Boot REST APIs, JWT authentication, RBAC, payment integrations and AES encryption.
+            This interactive UI and its venues, prices and activity are illustrative demo content.
+        </aside>
+
+        <!-- MAIN VIEWPORT CONTAINER -->
+        <div id="viewport-container" class="flex-1 overflow-hidden relative flex justify-center items-center">
+            
+            <!-- ================================================================= -->
+            <!-- 1. DESKTOP VIEW LAYOUT -->
+            <!-- ================================================================= -->
+            <div id="desktop-view" class="w-full h-full flex flex-col overflow-hidden">
+                
+                <!-- Desktop Header -->
+                <nav class="h-16 bg-sportsy-card/90 backdrop-blur-md border-b border-slate-800/80 px-8 flex items-center justify-between shrink-0">
+                    <div class="flex items-center space-x-8">
+                        <!-- Location Selector -->
+                        <div class="flex items-center space-x-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl text-xs cursor-pointer hover:border-emerald-500 transition" onclick="showToast('Location Picker Opened')">
+                            <i class="fa-solid fa-location-dot text-emerald-400"></i>
+                            <span class="font-bold text-slate-200">Mumbai</span>
+                            <span class="text-[10px] text-slate-500">BD, Suburban</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 ml-1"></i>
+                        </div>
+
+                        <!-- Main Nav Links -->
+                        <div class="flex items-center space-x-6 text-xs font-bold">
+                            <button onclick="switchDesktopTab('turfs')" id="dtab-turfs" class="text-emerald-400 flex items-center space-x-2">
+                                <i class="fa-solid fa-layer-group"></i>
+                                <span>Book Turfs</span>
+                            </button>
+                            <button onclick="switchDesktopTab('matches')" id="dtab-matches" class="text-slate-400 hover:text-white flex items-center space-x-2 transition">
+                                <i class="fa-solid fa-users text-lime-400"></i>
+                                <span>Open Games (Play)</span>
+                                <span class="bg-lime-950 text-lime-400 text-[9px] px-1.5 py-0.2 rounded-full border border-lime-800">8 Nearby</span>
+                            </button>
+                            <button onclick="switchDesktopTab('partner')" id="dtab-partner" class="text-slate-400 hover:text-white flex items-center space-x-2 transition">
+                                <i class="fa-solid fa-chart-line text-cyan-400"></i>
+                                <span>Turf Partner Desk</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Controls -->
+                    <div class="flex items-center space-x-4">
+                        <div class="relative w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-500"></i>
+                            <input type="text" placeholder="Search turfs, area or sport..." class="w-full bg-slate-900 text-xs text-white placeholder-slate-500 rounded-xl pl-9 pr-3 py-2 border border-slate-800 focus:outline-none focus:border-emerald-500 font-medium">
+                        </div>
+                        <div class="w-8 h-8 rounded-xl bg-slate-800 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-bold text-xs">
+                            AK
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Desktop Body Content Workspace -->
+                <main class="flex-1 overflow-y-auto custom-scrollbar bg-sportsy-bg p-8 space-y-8">
+                    
+                    <!-- TAB 1: BOOK TURFS -->
+                    <div id="desktop-turfs-view" class="space-y-8">
+                        
+                        <!-- Hero Quick Filter Banner -->
+                        <div class="bg-gradient-to-r from-slate-900 via-sportsy-card to-slate-900 p-8 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
+                            <div class="absolute -right-10 -bottom-10 opacity-10 text-emerald-400 text-9xl">
+                                <i class="fa-solid fa-futbol"></i>
+                            </div>
+
+                            <div class="relative z-10 max-w-3xl space-y-4">
+                                <span class="bg-emerald-950 text-emerald-300 text-[10px] font-black px-3 py-1 rounded-full border border-emerald-700 uppercase tracking-widest">
+                                    INSTANT CONFIRMATION & FLOODLIGHT TURFS
+                                </span>
+                                <h1 class="text-3xl font-black text-white tracking-tight">
+                                    Book Top Sports Turfs & Arenas Near You
+                                </h1>
+                                <p class="text-xs text-slate-400 leading-relaxed">
+                                    Select your sport, pick an available slot (Morning, Evening, Night), invite players, and split payments seamlessly.
+                                </p>
+
+                                <!-- Interactive Search Box Filter -->
+                                <div class="bg-slate-950/80 p-3 rounded-2xl border border-slate-800 grid grid-cols-1 md:grid-cols-4 gap-3">
+                                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase">Select Sport</label>
+                                        <select id="hero-sport-filter" onchange="filterTurfs()" class="w-full bg-transparent text-xs font-bold text-emerald-400 focus:outline-none">
+                                            <option value="all">All Sports</option>
+                                            <option value="box-cricket">Box Cricket</option>
+                                            <option value="football">Football 5v5 / 7v7</option>
+                                            <option value="badminton">Badminton</option>
+                                            <option value="pickleball">Pickleball</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase">Date</label>
+                                        <input type="date" value="2026-11-06" class="w-full bg-transparent text-xs font-bold text-white focus:outline-none">
+                                    </div>
+
+                                    <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">
+                                        <label class="block text-[10px] font-bold text-slate-400 uppercase">Time Slot</label>
+                                        <select class="w-full bg-transparent text-xs font-bold text-white focus:outline-none">
+                                            <option>Evening (06:00 PM - 10:00 PM)</option>
+                                            <option>Night (10:00 PM - 02:00 AM)</option>
+                                            <option>Morning (06:00 AM - 10:00 AM)</option>
+                                        </select>
+                                    </div>
+
+                                    <button onclick="filterTurfs()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl flex items-center justify-center space-x-2 transition shadow-lg glow-emerald">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                        <span>Find Available Slot</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sport Categories Selector -->
+                        <div class="space-y-3">
+                            <h3 class="text-xs font-extrabold uppercase text-slate-400 tracking-wider">Browse by Sport Category</h3>
+                            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                                <button onclick="selectSportFilter('box-cricket')" class="sport-cat-btn bg-sportsy-card p-4 rounded-2xl border border-slate-800 hover:border-emerald-500 text-center space-y-2 transition group">
+                                    <i class="fa-solid fa-baseball text-2xl text-amber-400 group-hover:scale-110 transition-transform"></i>
+                                    <p class="text-xs font-bold text-white">Box Cricket</p>
+                                    <p class="text-[10px] text-slate-500">14 Arenas Available</p>
+                                </button>
+                                <button onclick="selectSportFilter('football')" class="sport-cat-btn bg-sportsy-card p-4 rounded-2xl border border-slate-800 hover:border-emerald-500 text-center space-y-2 transition group">
+                                    <i class="fa-solid fa-futbol text-2xl text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                                    <p class="text-xs font-bold text-white">Football (5v5)</p>
+                                    <p class="text-[10px] text-slate-500">18 Turfs Available</p>
+                                </button>
+                                <button onclick="selectSportFilter('badminton')" class="sport-cat-btn bg-sportsy-card p-4 rounded-2xl border border-slate-800 hover:border-emerald-500 text-center space-y-2 transition group">
+                                    <i class="fa-solid fa-feather text-2xl text-cyan-400 group-hover:scale-110 transition-transform"></i>
+                                    <p class="text-xs font-bold text-white">Badminton</p>
+                                    <p class="text-[10px] text-slate-500">9 Indoor Courts</p>
+                                </button>
+                                <button onclick="selectSportFilter('pickleball')" class="sport-cat-btn bg-sportsy-card p-4 rounded-2xl border border-slate-800 hover:border-emerald-500 text-center space-y-2 transition group">
+                                    <i class="fa-solid fa-table-tennis-paddle-ball text-2xl text-lime-400 group-hover:scale-110 transition-transform"></i>
+                                    <p class="text-xs font-bold text-white">Pickleball</p>
+                                    <p class="text-[10px] text-slate-500">6 Modern Courts</p>
+                                </button>
+                                <button onclick="selectSportFilter('all')" class="sport-cat-btn bg-sportsy-card p-4 rounded-2xl border border-slate-800 hover:border-emerald-500 text-center space-y-2 transition group">
+                                    <i class="fa-solid fa-trophy text-2xl text-purple-400 group-hover:scale-110 transition-transform"></i>
+                                    <p class="text-xs font-bold text-white">Show All</p>
+                                    <p class="text-[10px] text-slate-500">47 Venues Nearby</p>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Featured Turfs Grid -->
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-black text-white uppercase tracking-wider">Top Rated Turfs Near You</h3>
+                                <span class="text-xs text-slate-400">Showing <span class="text-emerald-400 font-bold">4 Featured Venues</span></span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5" id="turf-cards-container">
+                                
+                                <!-- Turf Card 1 -->
+                                <div class="turf-card bg-sportsy-card rounded-2xl border border-slate-800 overflow-hidden space-y-3 hover:border-emerald-500/50 transition group" data-sport="football">
+                                    <div class="h-40 bg-slate-900 relative">
+                                        <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=600&auto=format&fit=crop&q=80" alt="Turf Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x300/10b981/ffffff?text=Turf+Arena'">
+                                        <span class="absolute top-3 left-3 bg-emerald-950 text-emerald-300 font-black text-[10px] px-2.5 py-0.5 rounded-full border border-emerald-700">
+                                            FIFA APPROVED TURF
+                                        </span>
+                                        <span class="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md text-amber-400 font-bold text-xs px-2 py-0.5 rounded-lg flex items-center space-x-1">
+                                            <i class="fa-solid fa-star text-[10px]"></i>
+                                            <span>4.9 (120+)</span>
+                                        </span>
+                                    </div>
+                                    <div class="p-4 space-y-3">
+                                        <div>
+                                            <h4 class="font-extrabold text-sm text-white group-hover:text-emerald-400 transition">Strikers Arena 5v5 & 7v7</h4>
+                                            <p class="text-[11px] text-slate-400"><i class="fa-solid fa-location-dot text-emerald-500 mr-1"></i>Andheri West, Mumbai • 2.4 km</p>
+                                        </div>
+
+                                        <div class="flex flex-wrap gap-1.5 text-[10px] font-semibold text-slate-400">
+                                            <span class="bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">Floodlights</span>
+                                            <span class="bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">Locker Room</span>
+                                            <span class="bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">Parking</span>
+                                        </div>
+
+                                        <div class="pt-2 border-t border-slate-800/80 flex justify-between items-center">
+                                            <div>
+                                                <span class="text-xs text-slate-500">Starts at</span>
+                                                <p class="text-sm font-black text-white">₹1,400 <span class="text-[10px] text-slate-400 font-normal">/ hr</span></p>
+                                            </div>
+                                            <button onclick="openBookingModal('Strikers Arena 5v5', 1400)" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
+                                                Book Slot
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Turf Card 2 -->
+                                <div class="turf-card bg-sportsy-card rounded-2xl border border-slate-800 overflow-hidden space-y-3 hover:border-emerald-500/50 transition group" data-sport="box-cricket">
+                                    <div class="h-40 bg-slate-900 relative">
+                                        <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=600&auto=format&fit=crop&q=80" alt="Turf Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x300/84cc16/ffffff?text=Cricket+Box'">
+                                        <span class="absolute top-3 left-3 bg-lime-950 text-lime-300 font-black text-[10px] px-2.5 py-0.5 rounded-full border border-lime-700">
+                                            BOX CRICKET & NETS
+                                        </span>
+                                        <span class="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md text-amber-400 font-bold text-xs px-2 py-0.5 rounded-lg flex items-center space-x-1">
+                                            <i class="fa-solid fa-star text-[10px]"></i>
+                                            <span>4.8 (94)</span>
+                                        </span>
+                                    </div>
+                                    <div class="p-4 space-y-3">
+                                        <div>
+                                            <h4 class="font-extrabold text-sm text-white group-hover:text-emerald-400 transition">Under-The-Lights Cricket Box</h4>
+                                            <p class="text-[11px] text-slate-400"><i class="fa-solid fa-location-dot text-emerald-500 mr-1"></i>Bandra East, Mumbai • 3.8 km</p>
+                                        </div>
+
+                                        <div class="flex flex-wrap gap-1.5 text-[10px] font-semibold text-slate-400">
+                                            <span class="bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">Night LED</span>
+                                            <span class="bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">Bats Provided</span>
+                                            <span class="bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">Canteen</span>
+                                        </div>
+
+                                        <div class="pt-2 border-t border-slate-800/80 flex justify-between items-center">
+                                            <div>
+                                                <span class="text-xs text-slate-500">Starts at</span>
+                                                <p class="text-sm font-black text-white">₹1,200 <span class="text-[10px] text-slate-400 font-normal">/ hr</span></p>
+                                            </div>
+                                            <button onclick="openBookingModal('Under-The-Lights Cricket Box', 1200)" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
+                                                Book Slot
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Turf Card 3 -->
+                                <div class="turf-card bg-sportsy-card rounded-2xl border border-slate-800 overflow-hidden space-y-3 hover:border-emerald-500/50 transition group" data-sport="badminton">
+                                    <div class="h-40 bg-slate-900 relative">
+                                        <img src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=600&auto=format&fit=crop&q=80" alt="Turf Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x300/06b6d4/ffffff?text=Badminton+Court'">
+                                        <span class="absolute top-3 left-3 bg-cyan-950 text-cyan-300 font-black text-[10px] px-2.5 py-0.5 rounded-full border border-cyan-700">
+                                            WOODEN INDOOR
+                                        </span>
+                                        <span class="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md text-amber-400 font-bold text-xs px-2 py-0.5 rounded-lg flex items-center space-x-1">
+                                            <i class="fa-solid fa-star text-[10px]"></i>
+                                            <span>4.9 (210)</span>
+                                        </span>
+                                    </div>
+                                    <div class="p-4 space-y-3">
+                                        <div>
+                                            <h4 class="font-extrabold text-sm text-white group-hover:text-emerald-400 transition">Smash Badminton Academy</h4>
+                                            <p class="text-[11px] text-slate-400"><i class="fa-solid fa-location-dot text-emerald-500 mr-1"></i>Powai, Mumbai • 5.1 km</p>
+                                        </div>
+
+                                        <div class="flex flex-wrap gap-1.5 text-[10px] font-semibold text-slate-400">
+                                            <span class="bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">Air-Conditioned</span>
+                                            <span class="bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">4 Courts</span>
+                                            <span class="bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">Shower</span>
+                                        </div>
+
+                                        <div class="pt-2 border-t border-slate-800/80 flex justify-between items-center">
+                                            <div>
+                                                <span class="text-xs text-slate-500">Starts at</span>
+                                                <p class="text-sm font-black text-white">₹600 <span class="text-[10px] text-slate-400 font-normal">/ hr</span></p>
+                                            </div>
+                                            <button onclick="openBookingModal('Smash Badminton Academy', 600)" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
+                                                Book Slot
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Turf Card 4 -->
+                                <div class="turf-card bg-sportsy-card rounded-2xl border border-slate-800 overflow-hidden space-y-3 hover:border-emerald-500/50 transition group" data-sport="pickleball">
+                                    <div class="h-40 bg-slate-900 relative">
+                                        <img src="https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=600&auto=format&fit=crop&q=80" alt="Turf Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x300/38bdf8/ffffff?text=Pickleball+Court'">
+                                        <span class="absolute top-3 left-3 bg-purple-950 text-purple-300 font-black text-[10px] px-2.5 py-0.5 rounded-full border border-purple-700">
+                                            SYNTHETIC PICKLEBALL
+                                        </span>
+                                        <span class="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md text-amber-400 font-bold text-xs px-2 py-0.5 rounded-lg flex items-center space-x-1">
+                                            <i class="fa-solid fa-star text-[10px]"></i>
+                                            <span>4.7 (45)</span>
+                                        </span>
+                                    </div>
+                                    <div class="p-4 space-y-3">
+                                        <div>
+                                            <h4 class="font-extrabold text-sm text-white group-hover:text-emerald-400 transition">Pickleball Hub Juhu</h4>
+                                            <p class="text-[11px] text-slate-400"><i class="fa-solid fa-location-dot text-emerald-500 mr-1"></i>Juhu, Mumbai • 1.8 km</p>
+                                        </div>
+
+                                        <div class="flex flex-wrap gap-1.5 text-[10px] font-semibold text-slate-400">
+                                            <span class="bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">Equipment Rental</span>
+                                            <span class="bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">Open Air</span>
+                                        </div>
+
+                                        <div class="pt-2 border-t border-slate-800/80 flex justify-between items-center">
+                                            <div>
+                                                <span class="text-xs text-slate-500">Starts at</span>
+                                                <p class="text-sm font-black text-white">₹900 <span class="text-[10px] text-slate-400 font-normal">/ hr</span></p>
+                                            </div>
+                                            <button onclick="openBookingModal('Pickleball Hub Juhu', 900)" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
+                                                Book Slot
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- TAB 2: OPEN MATCHES & MATCHMAKING -->
+                    <div id="desktop-matches-view" class="hidden space-y-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-xl font-black text-white">Open Games Seeking Extra Players</h2>
+                                <p class="text-xs text-slate-400">Short of 2 players for your match? Host or join games nearby instantly.</p>
+                            </div>
+                            <button onclick="showToast('Open Match Host Modal Triggered')" class="px-4 py-2 bg-lime-500 hover:bg-lime-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
+                                + Host An Open Game
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            
+                            <div class="bg-sportsy-card p-5 rounded-2xl border border-slate-800 space-y-4 relative overflow-hidden">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <span class="text-[10px] bg-emerald-950 text-emerald-400 font-extrabold px-2 py-0.5 rounded-full border border-emerald-800 uppercase">
+                                            FOOTBALL 5v5
+                                        </span>
+                                        <h3 class="font-extrabold text-sm text-white mt-2">Night Football Friendly</h3>
+                                        <p class="text-xs text-slate-400">Strikers Arena • Today, 10:00 PM</p>
+                                    </div>
+                                    <span class="text-xs font-mono font-bold text-lime-400">Need 2 Players</span>
+                                </div>
+
+                                <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 flex justify-between items-center text-xs">
+                                    <span class="text-slate-400">Slot Cost Per Player:</span>
+                                    <span class="font-bold text-white">₹140 / person</span>
+                                </div>
+
+                                <div class="flex items-center justify-between pt-2">
+                                    <div class="flex -space-x-2">
+                                        <div class="w-7 h-7 rounded-full bg-slate-800 border-2 border-slate-900 text-[10px] font-bold text-emerald-400 flex items-center justify-center">AB</div>
+                                        <div class="w-7 h-7 rounded-full bg-slate-800 border-2 border-slate-900 text-[10px] font-bold text-cyan-400 flex items-center justify-center">RK</div>
+                                        <div class="w-7 h-7 rounded-full bg-slate-800 border-2 border-slate-900 text-[10px] font-bold text-amber-400 flex items-center justify-center">MS</div>
+                                    </div>
+                                    <button onclick="showToast('Joined Match Request Sent to Host!')" class="px-3.5 py-1.5 bg-lime-500 hover:bg-lime-400 text-slate-950 font-black text-xs rounded-xl shadow">
+                                        Join Match
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bg-sportsy-card p-5 rounded-2xl border border-slate-800 space-y-4 relative overflow-hidden">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <span class="text-[10px] bg-amber-950 text-amber-400 font-extrabold px-2 py-0.5 rounded-full border border-amber-800 uppercase">
+                                            BOX CRICKET
+                                        </span>
+                                        <h3 class="font-extrabold text-sm text-white mt-2">Weekend Box Cricket League</h3>
+                                        <p class="text-xs text-slate-400">Under-The-Lights Box • Tomorrow, 07:00 AM</p>
+                                    </div>
+                                    <span class="text-xs font-mono font-bold text-lime-400">Need 3 Players</span>
+                                </div>
+
+                                <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 flex justify-between items-center text-xs">
+                                    <span class="text-slate-400">Slot Cost Per Player:</span>
+                                    <span class="font-bold text-white">₹100 / person</span>
+                                </div>
+
+                                <div class="flex items-center justify-between pt-2">
+                                    <div class="flex -space-x-2">
+                                        <div class="w-7 h-7 rounded-full bg-slate-800 border-2 border-slate-900 text-[10px] font-bold text-purple-400 flex items-center justify-center">VK</div>
+                                        <div class="w-7 h-7 rounded-full bg-slate-800 border-2 border-slate-900 text-[10px] font-bold text-rose-400 flex items-center justify-center">RD</div>
+                                    </div>
+                                    <button onclick="showToast('Joined Match Request Sent to Host!')" class="px-3.5 py-1.5 bg-lime-500 hover:bg-lime-400 text-slate-950 font-black text-xs rounded-xl shadow">
+                                        Join Match
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: PARTNER DESK DASHBOARD -->
+                    <div id="desktop-partner-view" class="hidden space-y-6">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-xl font-black text-white">Turf Partner Admin Console</h2>
+                                <p class="text-xs text-slate-400">Real-time slot utilization, revenue metrics, and booking control</p>
+                            </div>
+                            <span class="text-xs bg-slate-900 border border-slate-800 text-emerald-400 px-3 py-1.5 rounded-xl font-mono">
+                                Arena ID: #TRF-9021
+                            </span>
+                        </div>
+
+                        <!-- Stats Row -->
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                            <div class="bg-sportsy-card p-4 rounded-2xl border border-slate-800 space-y-1">
+                                <span class="text-xs text-slate-400">Today's Revenue</span>
+                                <p class="text-2xl font-black text-white font-mono">₹14,800</p>
+                                <span class="text-[10px] text-emerald-400 font-bold">+18% vs yesterday</span>
+                            </div>
+                            <div class="bg-sportsy-card p-4 rounded-2xl border border-slate-800 space-y-1">
+                                <span class="text-xs text-slate-400">Slots Occupancy</span>
+                                <p class="text-2xl font-black text-white font-mono">92%</p>
+                                <span class="text-[10px] text-emerald-400 font-bold">11 of 12 booked</span>
+                            </div>
+                            <div class="bg-sportsy-card p-4 rounded-2xl border border-slate-800 space-y-1">
+                                <span class="text-xs text-slate-400">Walk-in Bookings</span>
+                                <p class="text-2xl font-black text-white font-mono">3 Slots</p>
+                                <span class="text-[10px] text-slate-500">Manual counter entries</span>
+                            </div>
+                            <div class="bg-sportsy-card p-4 rounded-2xl border border-slate-800 space-y-1">
+                                <span class="text-xs text-slate-400">Pending Payout</span>
+                                <p class="text-2xl font-black text-cyan-400 font-mono">₹48,200</p>
+                                <span class="text-[10px] text-slate-400">Payout Date: Monday</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </main>
+            </div>
+
+            <!-- ================================================================= -->
+            <!-- 2. ANDROID MOBILE VIEW LAYOUT (MOCKUP FRAME) -->
+            <!-- ================================================================= -->
+            <div id="mobile-view" class="hidden w-[380px] h-[720px] bg-slate-950 rounded-[45px] phone-frame relative overflow-hidden flex flex-col border-4 border-slate-800">
+                
+                <!-- Phone Top Camera Notch / Speaker -->
+                <div class="w-full bg-slate-950 h-7 flex justify-between items-center px-6 pt-2 z-50 shrink-0">
+                    <span class="text-[11px] font-bold text-slate-400 font-mono">09:41</span>
+                    <div class="w-20 h-4 bg-slate-900 rounded-full flex items-center justify-center">
+                        <div class="w-3 h-3 bg-slate-950 rounded-full"></div>
+                    </div>
+                    <div class="flex items-center space-x-1 text-[10px] text-slate-400">
+                        <i class="fa-solid fa-wifi"></i>
+                        <i class="fa-solid fa-battery-three-quarters"></i>
+                    </div>
+                </div>
+
+                <!-- Mobile App Header -->
+                <div class="bg-sportsy-card px-4 py-3 border-b border-slate-800 flex items-center justify-between z-30 shrink-0">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-7 h-7 rounded-lg bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-xs">
+                            <i class="fa-solid fa-futbol"></i>
+                        </div>
+                        <div>
+                            <span class="font-black text-sm text-white leading-none block">sportsy</span>
+                            <span class="text-[9px] text-emerald-400 leading-none">Mumbai • Andheri</span>
+                        </div>
+                    </div>
+                    <i class="fa-regular fa-bell text-slate-400 text-sm"></i>
+                </div>
+
+                <!-- Mobile Scrollable Body -->
+                <div class="flex-1 overflow-y-auto custom-scrollbar bg-sportsy-bg p-4 space-y-4">
+                    
+                    <!-- Mobile Banner Card -->
+                    <div class="bg-gradient-to-r from-emerald-950 to-slate-900 p-4 rounded-2xl border border-emerald-800/60 space-y-2">
+                        <span class="text-[9px] font-black text-emerald-400 uppercase tracking-wider">INSTANT BOOKING</span>
+                        <h2 class="text-sm font-black text-white">Need a turf for tonight?</h2>
+                        <p class="text-[10px] text-slate-400">Lock slots in 3 clicks with zero booking fees.</p>
+                        <button onclick="openBookingModal('Mobile Instant Slot', 1200)" class="w-full py-2 bg-emerald-500 text-slate-950 font-black text-xs rounded-xl shadow">
+                            Book Night Slot Now
+                        </button>
+                    </div>
+
+                    <!-- Mobile Sports Horizontal Scroll -->
+                    <div class="flex space-x-2 overflow-x-auto custom-scrollbar pb-1">
+                        <span class="bg-emerald-500 text-slate-950 text-xs font-bold px-3 py-1.5 rounded-xl shrink-0">All Sports</span>
+                        <span class="bg-slate-900 text-slate-300 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-800 shrink-0">Cricket</span>
+                        <span class="bg-slate-900 text-slate-300 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-800 shrink-0">Football</span>
+                        <span class="bg-slate-900 text-slate-300 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-800 shrink-0">Badminton</span>
+                    </div>
+
+                    <!-- Mobile Turf List -->
+                    <div class="space-y-3">
+                        <span class="text-xs font-extrabold text-white">Nearby Arenas</span>
+
+                        <div class="bg-sportsy-card p-3 rounded-2xl border border-slate-800 flex space-x-3 items-center">
+                            <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=200&auto=format&fit=crop&q=80" class="w-20 h-20 rounded-xl object-cover shrink-0" onerror="this.src='https://placehold.co/200x200/10b981/ffffff?text=Turf'">
+                            <div class="flex-1 space-y-1">
+                                <h4 class="font-bold text-xs text-white">Strikers Arena 5v5</h4>
+                                <p class="text-[10px] text-slate-400">Andheri West • 2.4 km</p>
+                                <div class="flex justify-between items-center pt-1">
+                                    <span class="text-xs font-bold text-emerald-400">₹1,400/hr</span>
+                                    <button onclick="openBookingModal('Strikers Arena (Mobile)', 1400)" class="px-2.5 py-1 bg-emerald-500 text-slate-950 text-[10px] font-black rounded-lg">Book</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-sportsy-card p-3 rounded-2xl border border-slate-800 flex space-x-3 items-center">
+                            <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=200&auto=format&fit=crop&q=80" class="w-20 h-20 rounded-xl object-cover shrink-0" onerror="this.src='https://placehold.co/200x200/84cc16/ffffff?text=Cricket'">
+                            <div class="flex-1 space-y-1">
+                                <h4 class="font-bold text-xs text-white">Under-The-Lights Box</h4>
+                                <p class="text-[10px] text-slate-400">Bandra East • 3.8 km</p>
+                                <div class="flex justify-between items-center pt-1">
+                                    <span class="text-xs font-bold text-emerald-400">₹1,200/hr</span>
+                                    <button onclick="openBookingModal('Under-The-Lights (Mobile)', 1200)" class="px-2.5 py-1 bg-emerald-500 text-slate-950 text-[10px] font-black rounded-lg">Book</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Mobile Bottom Navigation Bar -->
+                <div class="bg-sportsy-card border-t border-slate-800 px-6 py-2.5 flex justify-between items-center text-[10px] font-bold text-slate-500 z-30 shrink-0">
+                    <button class="flex flex-col items-center space-y-0.5 text-emerald-400">
+                        <i class="fa-solid fa-house text-sm"></i>
+                        <span>Home</span>
+                    </button>
+                    <button class="flex flex-col items-center space-y-0.5 hover:text-white">
+                        <i class="fa-solid fa-map-location-dot text-sm"></i>
+                        <span>Turfs</span>
+                    </button>
+                    <button class="flex flex-col items-center space-y-0.5 hover:text-white">
+                        <i class="fa-solid fa-users text-sm"></i>
+                        <span>Play</span>
+                    </button>
+                    <button class="flex flex-col items-center space-y-0.5 hover:text-white">
+                        <i class="fa-solid fa-ticket text-sm"></i>
+                        <span>Bookings</span>
+                    </button>
+                </div>
+
+                <!-- Android Gesture Bar -->
+                <div class="w-full bg-slate-950 h-4 flex justify-center items-center shrink-0">
+                    <div class="w-28 h-1 bg-slate-700 rounded-full"></div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= MODAL: INTERACTIVE SLOT BOOKER ================= -->
+    <div id="booking-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-sportsy-card rounded-3xl max-w-lg w-full p-6 space-y-5 border border-slate-800 shadow-2xl relative">
+            
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-black text-base">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-black text-white" id="modal-turf-title">Strikers Arena 5v5</h3>
+                        <p class="text-[10px] text-slate-400">Select Date & Preferred Time Slots</p>
+                    </div>
+                </div>
+                <button onclick="closeBookingModal()" class="w-8 h-8 rounded-full bg-slate-900 text-slate-400 hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Modal Form Options -->
+            <div class="space-y-4 text-xs">
+                
+                <div>
+                    <label class="block text-slate-400 font-bold mb-1">Select Booking Date</label>
+                    <div class="grid grid-cols-4 gap-2 font-mono">
+                        <button onclick="selectDate(this)" class="p-2 bg-emerald-950 text-emerald-300 font-bold rounded-xl border border-emerald-700 text-center">
+                            Today<br><span class="text-[10px] font-normal">06 Nov</span>
+                        </button>
+                        <button onclick="selectDate(this)" class="p-2 bg-slate-900 text-slate-300 font-bold rounded-xl border border-slate-800 text-center">
+                            Sat<br><span class="text-[10px] text-slate-500">07 Nov</span>
+                        </button>
+                        <button onclick="selectDate(this)" class="p-2 bg-slate-900 text-slate-300 font-bold rounded-xl border border-slate-800 text-center">
+                            Sun<br><span class="text-[10px] text-slate-500">08 Nov</span>
+                        </button>
+                        <button onclick="selectDate(this)" class="p-2 bg-slate-900 text-slate-300 font-bold rounded-xl border border-slate-800 text-center">
+                            Mon<br><span class="text-[10px] text-slate-500">09 Nov</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-slate-400 font-bold mb-1">Available Time Slots</label>
+                    <div class="grid grid-cols-3 gap-2 font-mono text-center">
+                        <button onclick="toggleSlot(this, 1)" class="slot-btn p-2 bg-slate-900 text-slate-300 rounded-xl border border-slate-800 hover:border-emerald-500 transition">
+                            07:00 PM - 08:00 PM
+                        </button>
+                        <button onclick="toggleSlot(this, 1)" class="slot-btn p-2 bg-emerald-950 text-emerald-300 font-bold rounded-xl border border-emerald-700 transition">
+                            08:00 PM - 09:00 PM
+                        </button>
+                        <button onclick="toggleSlot(this, 1)" class="slot-btn p-2 bg-slate-900 text-slate-300 rounded-xl border border-slate-800 hover:border-emerald-500 transition">
+                            09:00 PM - 10:00 PM
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Price Calculator Box -->
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-between items-center font-mono">
+                    <div>
+                        <span class="text-[10px] text-slate-500 block">Total Amount (1 Hour)</span>
+                        <span id="modal-price-calc" class="text-base font-black text-emerald-400">₹1,400 INR</span>
+                    </div>
+                    <span class="text-[10px] bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded border border-emerald-800">FREE CANCELLATION</span>
+                </div>
+
+            </div>
+
+            <!-- Footer Action -->
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                <button onclick="closeBookingModal()" class="text-xs text-slate-400 hover:text-white font-bold">Cancel</button>
+                <button onclick="showToast('Slot Booked Successfully! Confirmation Sent.'); closeBookingModal();" class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow transition">
+                    Pay & Confirm Slot
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- TOAST SYSTEM -->
+    <div id="sportsy-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-5 py-2.5 rounded-full shadow-2xl z-50 opacity-0 pointer-events-none transition-all duration-300 border border-slate-700 flex items-center space-x-2 font-medium">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="sportsy-toast-msg">Action completed</span>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let currentHourlyPrice = 1400;
+
+        // View Mode Switcher (Desktop vs Mobile)
+        function setViewMode(mode) {
+            const dView = document.getElementById('desktop-view');
+            const mView = document.getElementById('mobile-view');
+            const btnD = document.getElementById('view-btn-desktop');
+            const btnM = document.getElementById('view-btn-mobile');
+
+            if (mode === 'desktop') {
+                dView.classList.remove('hidden');
+                mView.classList.add('hidden');
+                btnD.className = "flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 shadow transition";
+                btnM.className = "flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition";
+            } else {
+                dView.classList.add('hidden');
+                mView.classList.remove('hidden');
+                btnM.className = "flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 shadow transition";
+                btnD.className = "flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition";
+            }
+        }
+
+        // Desktop Inner Tab Switcher
+        function switchDesktopTab(tab) {
+            const turfs = document.getElementById('desktop-turfs-view');
+            const matches = document.getElementById('desktop-matches-view');
+            const partner = document.getElementById('desktop-partner-view');
+
+            const btnT = document.getElementById('dtab-turfs');
+            const btnM = document.getElementById('dtab-matches');
+            const btnP = document.getElementById('dtab-partner');
+
+            turfs.classList.add('hidden');
+            matches.classList.add('hidden');
+            partner.classList.add('hidden');
+
+            btnT.className = "text-slate-400 hover:text-white flex items-center space-x-2 transition";
+            btnM.className = "text-slate-400 hover:text-white flex items-center space-x-2 transition";
+            btnP.className = "text-slate-400 hover:text-white flex items-center space-x-2 transition";
+
+            if (tab === 'turfs') {
+                turfs.classList.remove('hidden');
+                btnT.className = "text-emerald-400 flex items-center space-x-2";
+            } else if (tab === 'matches') {
+                matches.classList.remove('hidden');
+                btnM.className = "text-emerald-400 flex items-center space-x-2";
+            } else if (tab === 'partner') {
+                partner.classList.remove('hidden');
+                btnP.className = "text-emerald-400 flex items-center space-x-2";
+            }
+        }
+
+        // Category Filtering
+        function selectSportFilter(sport) {
+            document.getElementById('hero-sport-filter').value = sport;
+            filterTurfs();
+        }
+
+        function filterTurfs() {
+            const sport = document.getElementById('hero-sport-filter').value;
+            const cards = document.querySelectorAll('.turf-card');
+
+            cards.forEach(card => {
+                if (sport === 'all' || card.getAttribute('data-sport') === sport) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            showToast(`Filtered turfs for: ${sport.toUpperCase()}`);
+        }
+
+        // Modal Controls
+        function openBookingModal(title, price) {
+            currentHourlyPrice = price;
+            document.getElementById('modal-turf-title').innerText = title;
+            document.getElementById('modal-price-calc').innerText = `₹${price.toLocaleString('en-IN')} INR`;
+            const modal = document.getElementById('booking-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeBookingModal() {
+            const modal = document.getElementById('booking-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function toggleSlot(btn, hours) {
+            const total = currentHourlyPrice * hours;
+            document.getElementById('modal-price-calc').innerText = `₹${total.toLocaleString('en-IN')} INR`;
+            showToast('Slot time updated');
+        }
+
+        function selectDate(btn) {
+            showToast('Booking date updated');
+        }
+
+        // Toast Helper
+        let toastTimer;
+        function showToast(msg) {
+            const toast = document.getElementById('sportsy-toast');
+            const toastMsg = document.getElementById('sportsy-toast-msg');
+            toastMsg.innerText = msg;
+            
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>

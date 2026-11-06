@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XgenPlus Enterprise Webmail - Data Ingenious Global Limited</title>
+    <title>XgenPlus Webmail - Illustrative Product Walkthrough</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -49,11 +49,44 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: rgba(100, 116, 139, 0.8);
         }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background:
+                radial-gradient(ellipse at 82% 10%, rgba(103, 82, 217, 0.2), transparent 32rem),
+                radial-gradient(ellipse at 4% 55%, rgba(26, 156, 170, 0.12), transparent 30rem),
+                #0b1020;
+        }
+        .xgen-window {
+            width: min(1600px, 100%);
+            height: min(900px, calc(100vh - 48px));
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(177, 195, 226, 0.2);
+            border-radius: 18px;
+            background: #f8fafc;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+        }
+        @media (max-width: 700px) {
+            body {
+                padding: 0;
+            }
+            .xgen-window {
+                width: 100%;
+                height: 100vh;
+                border: 0;
+                border-radius: 0;
+            }
+        }
     </style>
 </head>
-<body class="h-full bg-slate-100 text-slate-800 font-sans antialiased overflow-hidden select-none dark:bg-slate-950 dark:text-slate-100">
+<body class="text-slate-800 font-sans antialiased overflow-hidden select-none">
 
-    <div class="flex flex-col h-screen w-screen overflow-hidden">
+    <div class="xgen-window">
         
         <!-- ================= TOP DESKTOP HEADER BAR ================= -->
         <header class="h-14 bg-slate-900 text-white flex items-center justify-between px-4 border-b border-slate-800 z-30 shrink-0">
@@ -105,10 +138,6 @@
                 <div class="h-6 w-px bg-slate-800"></div>
 
                 <!-- Dark Mode Toggle -->
-                <button onclick="toggleDarkMode()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition" title="Toggle Theme">
-                    <i class="fa-solid fa-moon text-sm" id="dark-mode-icon"></i>
-                </button>
-
                 <!-- Account Switcher Profile Card -->
                 <div class="relative cursor-pointer" onclick="openAccountDropdown()">
                     <div class="flex items-center space-x-2.5 bg-slate-800 hover:bg-slate-700/80 p-1.5 px-2.5 rounded-xl border border-slate-700 transition">
@@ -124,6 +153,13 @@
                 </div>
             </div>
         </header>
+
+        <aside class="shrink-0 border-b border-cyan-300/20 bg-slate-950 px-4 py-2 text-center text-xs leading-relaxed text-slate-300">
+            <span class="text-cyan-300">
+            Illustrative product walkthrough: messages, names and metrics are demo content.
+            My described contribution was Java backend functionality, not UI design.
+            </span>
+        </aside>
 
         <!-- ================= 3-COLUMN DESKTOP WORKSPACE ================= -->
         <div class="flex-1 flex overflow-hidden">
@@ -822,23 +858,6 @@
         function closeSecurityModal() {
             const modal = document.getElementById('security-modal');
             modal.classList.add('opacity-0', 'pointer-events-none');
-        }
-
-        // Dark / Light Mode Toggle
-        let isDarkMode = false;
-        function toggleDarkMode() {
-            isDarkMode = !isDarkMode;
-            const html = document.documentElement;
-            const icon = document.getElementById('dark-mode-icon');
-            if (isDarkMode) {
-                html.classList.add('dark');
-                icon.className = 'fa-solid fa-sun text-amber-400 text-sm';
-                showToast('Activated Dark Mode Theme');
-            } else {
-                html.classList.remove('dark');
-                icon.className = 'fa-solid fa-moon text-sm';
-                showToast('Activated Light Mode Theme');
-            }
         }
 
         // Toggle Sidebar Collapse
